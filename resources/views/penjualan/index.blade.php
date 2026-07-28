@@ -56,7 +56,7 @@
             <a href="{{ route('penjualan.edit', $sale)}}" class="btn btn-warning">Edit</a>
             @endcan 
             ||
-            @can('view', $sale)
+            @can('delete', $sale)
             <form action="{{ route('penjualan.destroy' , $sale)}}" method="POST" class="d-inline">
                 @csrf
                 @method('DELETE')
@@ -69,7 +69,7 @@
     </tr>
     @empty
     <tr>
-        <td collspan=7><h1>Data tidak tersedia.</h1></td>
+        <td collspan="7"><h1>Data tidak tersedia.</h1></td>
     </tr>
     @endforelse
   </tbody>

@@ -149,14 +149,10 @@ class PenjualanController extends Controller
     public function destroy(Penjualan $penjualan)
     {
         $this->authorize('delete', $penjualan);
+
         // ! pastikan hanya transaksi OPEN
         if($penjualan->status !== 'OPEN') {
             return redirect()->route('penjualan.index')->with('errors', 'Transaksi Sudah selesai tidak bisa dibatalkan');
-        }
-
-        // pastikan milik user login 
-        if($penjualan->user_id !== Auth::id()) {
-            return redirect()->route('penjualan.create');
         }
 
         DB::transaction(function() use ($penjualan) {

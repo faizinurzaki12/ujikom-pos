@@ -1,37 +1,36 @@
-<!-- memanggil file app.blade.php -->
 @extends('layouts.app')
 
-<!-- mengirimkan nilai title ke title untuk di tampilkan -->
 @section('title', 'Login')
 
-<!-- batas awal konten  -->
 @section('content')
-<div class="card text-center position-absolute top-50 start-50 translate-middle" style="width: 18rem;">
-  <h5 class="card-header">Login POS</h5>
-  <div class="card-body">
-    <form action="{{ route('auth')}}" method="POST">
-      @csrf
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Masukan Email Anda...</label>
-    <input type="email" name="email" placeholder="contoh@gmail.com" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    @error('email')
-    <div class="badge text-bg-danger">{{ $message }}</div>
-    @enderror
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" name="password" placeholder="Masukan Password Anda min 8" class="form-control" id="exampleInputPassword1">
-  </div>
-  @error('password')
-    <div class="badge text-bg-danger">{{ $message }}</div>
-  @enderror
-  <!-- <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div> -->
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="row mt-5 justify-content-center align-items-center" style="height: 85vh;">
+  <div class="col-auto">
+    <div class="card text-center shadow p-3 bg-white bg-opacity-75 backdrop-blur" style="width: 22rem; border-radius: 12px">
+      <h4 class="card-header bg-transparent border-0 fw-bold pt-3">Login POS</h4>
+      <div class="card-body">
+        <form action="{{ route('auth') }}" method="POST">
+          @csrf
+
+          <div class="mb-3 text-start">
+            <label for="email" class="form-label">Email Anda</label>
+            <input type="email" name="email" value="{{ old('email') }}" placeholder="contoh@gmail.com" class="form-control" id="email" required />
+            @error('email')
+            <div class="badge text-bg-danger mt-1">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <div class="mb-3 text-start">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" placeholder="Minimal 8 karakter" class="form-control" id="password" required />
+            @error('password')
+            <div class="badge text-bg-danger mt-1">{{ $message }}</div>
+            @enderror
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Masuk Sekarang</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
-<!-- batas akhir konten -->
 @endsection

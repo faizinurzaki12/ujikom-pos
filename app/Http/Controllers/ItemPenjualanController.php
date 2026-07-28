@@ -149,6 +149,8 @@ class ItemPenjualanController extends Controller
      */
     public function destroy(ItemPenjualan $itempenjualan)
     {
+        $this->authorize('delete', $itempenjualan);
+        
         DB::transaction(function() use ($itempenjualan) {
             $produk = $itempenjualan->produk;
             $sale = $itempenjualan->penjualan;

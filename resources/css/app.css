@@ -1,8 +1,7 @@
-@import "Bootstrap/dist/css/bootstrap.min.css";
-@import "Bootstrap-icons/font/bootstrap-icons.css";
+@import "tailwindcss";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
 @source "../**/*.blade.php";
 @source "../**/*.js";
 @source "../**/*.vue";

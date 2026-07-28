@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 <!-- mengirimkan nilai title ke title untuk di tampilkan -->
-@section('title', 'Login')
+@section('title', 'dashboard')
 
 <!-- batas awal konten  -->
 @section('content')
