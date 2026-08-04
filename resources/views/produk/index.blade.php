@@ -56,16 +56,16 @@
         <td>
             <div class="d-flex align-items-center gap-1">
                 @can('view', $product)
-                    <a href="{{ route('produk.show', $product) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i></a>
+                    <a title="Detail" href="{{ route('produk.show', $product) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i></a>
                 @endcan
                 @can('update', $product)
-                    <a href="{{ route('produk.edit', $product) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                    <a title="Edit" href="{{ route('produk.edit', $product) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
                 @endcan
                 @can('delete', $product)
                     <form action="{{ route('produk.destroy', $product)}}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
+                        <button title="Hapus" type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
                             <i class="bi bi-trash"></i>
                         </button>
                     </form>

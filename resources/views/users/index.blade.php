@@ -59,13 +59,13 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-outline-warning">
+                            <a href="{{ route('admin.users.edit', $user) }}" title="Edit" class="btn btn-sm btn-outline-warning">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                             <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin Hapus user ini?')">
+                                <button title="Hapus" type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin Hapus user ini?')">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>

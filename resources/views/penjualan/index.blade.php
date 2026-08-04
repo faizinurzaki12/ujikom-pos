@@ -52,17 +52,17 @@
         <td>{{ $sale->metode_pembayaran }}</td>
         <td>{{ $sale->status }}</td>
         <td class="d-flex gap-1">
-                <a href="{{ route('penjualan.show', $sale) }}" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
+                <a title="Detail" href="{{ route('penjualan.show', $sale) }}" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
             @can('view', $sale)
             ||
-            <a href="{{ route('penjualan.edit', $sale)}}" class="btn btn-outline-warning"><i class="bi bi-pencil-square"></i></a>
+            <a title="Edit" href="{{ route('penjualan.edit', $sale)}}" class="btn btn-outline-warning"><i class="bi bi-pencil-square"></i></a>
             @endcan 
             ||
             @can('delete', $sale)
             <form action="{{ route('penjualan.destroy' , $sale)}}" method="POST" class="d-inline">
                 @csrf
                 @method('DELETE')
-                <button class="btn btn-outline-danger" onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
+                <button title="Hapus" class="btn btn-outline-danger" onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
                     <i class="bi bi-trash"></i>
                 </button>
             </form>
