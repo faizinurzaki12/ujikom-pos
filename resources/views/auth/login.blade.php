@@ -1,14 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'Login')
 
 @section('content')
-<div class="row mt-5 justify-content-center align-items-center" style="height: 85vh;">
+<div class="row justify-content-center align-items-center">
   <div class="col-auto">
-    <div class="card text-center shadow p-3 bg-white bg-opacity-75 backdrop-blur" style="width: 22rem; border-radius: 12px">
+    <div class="card login-card-anim text-center shadow p-3 bg-white rounded-4" style="width: 22rem; border: none;">
       <h4 class="card-header bg-transparent border-0 fw-bold pt-3">Login POS</h4>
       <div class="card-body">
-        <form action="{{ route('auth') }}" method="POST">
+        <form action="{{ route('auth') }}" method="POST" id="formLogin">
           @csrf
 
           <div class="mb-3 text-start">
@@ -26,11 +26,23 @@
             <div class="badge text-bg-danger mt-1">{{ $message }}</div>
             @enderror
           </div>
-
-          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Masuk Sekarang</button>
+          <button type="submit" id="btnSubmit" class="btn btn-primary w-100 py-2 fw-semibold">Masuk Sekarang</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+<script>
+  document.getElementById('formLogin').addEventListener('submit', function(e) {
+    const btn = document.getElementById('btnSubmit');
+    // ubah tombol menjadi disabled agar tidak bisa di klik dua kali 
+    btn.disabled = true;
+
+    // ganti teks tombol lalu tambahkan spinner bawaan boostrap 
+    btn.innerHTML = `
+    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+    Tunggu bentar..... 
+    `
+  })
+</script>
 @endsection

@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     // menampilkan halaman login 
     public function login() {
-        return view('login');
+        return view('auth.login');
     }
 
     // ini menggunakan login Request 

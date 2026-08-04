@@ -4,45 +4,46 @@
 
 @section('content')
 
-@include('layouts.navbar')
-
 <h1>Halaman Produk</h1>
+
 @can('create', App\Models\Produk::class)
 <a href="{{ route('produk.create') }}" class="btn btn-primary mb-3">create</a>
 @endcan
 
-<form action="{{ route('produk.index')}}" method="GET" class="mb-3">
+<form action="{{ route('produk.index')}}" method="GET" class="d-flex mb-3">
     <div class="input-group">
         <input 
             type="text" 
             name="search" 
-            value="" 
+            value="{{ request('search') }}" 
             class="form-control" 
             placeholder="Search nama produk"
         >
         <button class="btn btn-outline-secondary" type="submit">
             Search
         </button>
+        @if(request('search'))
+        <a href="{{ route('produk.index') }}" class="btn btn-outline-primary">Reset</a>
+        @endif
     </div>
 </form>
 
 <table class="table">
   <thead>
     <tr>
-    <th scope="col">#</th>
-    <th scope="col">User</th>
-    <th scope="col">Foto</th>
-    <th scope="col">Nama</th>
-    <th scope="col">Harga Beli</th>
-    <th scope="col">Harga Jual</th>
-    <th scope="col">Stok</th>
-    <th scope="col">Aksi</th>
-
+        <th scope="col">#</th>
+        <th scope="col">User</th>
+        <th scope="col">Foto</th>
+        <th scope="col">Nama</th>
+        <th scope="col">Harga Beli</th>
+        <th scope="col">Harga Jual</th>
+        <th scope="col">Stok</th>
+        <th scope="col">Aksi</th>
     </tr>
   </thead>
   <tbody>
+    @forelse ($products as $product)
     <tr>
-        @forelse ($products as $product)
         <th scope="row">{{ $products->firstItem() + $loop->index }}</th>
         <td>{{ $product->user->name }}</td>
         <td>
@@ -52,31 +53,35 @@
         <td>{{ $product->harga_beli }}</td>
         <td>{{ $product->harga_jual }}</td>
         <td>{{ $product->stok }}</td>
-        <td class="d-flex gap-1">
-            @can('view', $product)
-                <a href="{{ route('produk.show', $product) }}" class="btn btn-primary">Detail</a>
-            @endcan
-            @can('update', $product)
-            <a href="{{ route('produk.edit', $product) }}" class="btn btn-warning">Edit</a>
-            @endcan
-            ||
-            @can('delete', $product)
-            <form action="{{ route('produk.destroy', $product)}}" method="POST" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn-danger" onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
-                    Hapus
-                </button>
-            </form>
-            @endcan
+        <td>
+            <div class="d-flex align-items-center gap-1">
+                @can('view', $product)
+                    <a href="{{ route('produk.show', $product) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i></a>
+                @endcan
+                @can('update', $product)
+                    <a href="{{ route('produk.edit', $product) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                @endcan
+                @can('delete', $product)
+                    <form action="{{ route('produk.destroy', $product)}}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                @endcan
+            </div>
         </td>
     </tr>
     @empty
     <tr>
-        <td collspan=8><h1>Data tidak tersedia.</h1></td>
+        <td colspan="8" class="text-center py-4">
+            <h5 class="mb-0 text-muted"> <i class="bi bi-box-seam"></i> Produk Tidak tersedia.</h5>
+        </td>
     </tr>
     @endforelse
   </tbody>
 </table>
+
 {{ $products->links() }}
 @endsection

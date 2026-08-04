@@ -17,7 +17,7 @@ class ProdukController extends Controller
     public function index(SearchRequest $request)
     {
         $this->authorize('viewAny', Produk::class);
-        $keyword = $request->input('seacrh');
+        $keyword = $request->input('search');
         if($keyword) {
             $products = Produk::when($keyword, function ($query) use ($keyword){
                 $query->where('nama', 'like', '%' . $keyword . '%');

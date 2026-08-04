@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+    
 class RoleMiddlewarev
 {
     /**
@@ -21,7 +21,6 @@ class RoleMiddlewarev
                 ->withErrors(['Silahkan Login Terlebih Dahulu.']);
         }
 
-        // Ambil properti 'name' dari relasi role (gunakan nullsafe ?-> agar aman)
         $userRole = $request->user()->role?->name;
 
         // dd([

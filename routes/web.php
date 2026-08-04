@@ -7,11 +7,11 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ItemPenjualanController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LaporanController;
 
 
 // route yang bisa di akses ketika user belum login 
 Route::middleware('guest')->group(function() {
-    // Route::get('/' , function()) 
     Route::get('/', [AuthController::class, 'login'])->name('login');
     Route::post('/auth', [AuthController::class, 'auth'])->name('auth');
 });
@@ -20,6 +20,9 @@ Route::middleware('guest')->group(function() {
 Route::middleware('auth')->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/laporan/bulanan', [LaporanController::class, 'bulanan'])
+    ->name('laporan.bulanan')
+    ->middleware('auth');
 
     // Khusus admin — users
     Route::middleware('role:admin')->name('admin.')->group(function () {

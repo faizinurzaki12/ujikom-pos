@@ -4,7 +4,6 @@
 
 @section('content')
 
-@include('layouts.navbar')
 @if(session('errors'))
 <div class="alert alert-danger">
     {{session('errors')}}
@@ -25,6 +24,9 @@
         <button class="btn btn-outline-secondary" type="submit">
             Search
         </button>
+        @if(request('search'))
+            <a href="{{ route('penjualan.index') }}" class="btn btn-outline-primary">Reset</a>
+        @endif
     </div>
 </form>
 
@@ -50,18 +52,18 @@
         <td>{{ $sale->metode_pembayaran }}</td>
         <td>{{ $sale->status }}</td>
         <td class="d-flex gap-1">
-                <a href="{{ route('penjualan.show', $sale) }}" class="btn btn-primary">Detail</a>
+                <a href="{{ route('penjualan.show', $sale) }}" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
             @can('view', $sale)
             ||
-            <a href="{{ route('penjualan.edit', $sale)}}" class="btn btn-warning">Edit</a>
+            <a href="{{ route('penjualan.edit', $sale)}}" class="btn btn-outline-warning"><i class="bi bi-pencil-square"></i></a>
             @endcan 
             ||
             @can('delete', $sale)
             <form action="{{ route('penjualan.destroy' , $sale)}}" method="POST" class="d-inline">
                 @csrf
                 @method('DELETE')
-                <button class="btn btn-danger" onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
-                    Hapus
+                <button class="btn btn-outline-danger" onclick="return confirm('Apakah anda yakin akan menghapus produk ini?')">
+                    <i class="bi bi-trash"></i>
                 </button>
             </form>
             @endcan
@@ -69,7 +71,7 @@
     </tr>
     @empty
     <tr>
-        <td collspan="7"><h1>Data tidak tersedia.</h1></td>
+        <td colspan="7" class="text-center"><h1><i class="bi bi-cart-check"></i> Data tidak tersedia.</h1></td>
     </tr>
     @endforelse
   </tbody>

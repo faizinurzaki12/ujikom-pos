@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah User')
+@section('title', 'Edit User')
 
 @section('content')
 <h4>Edit User</h4>
