@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h1>Halaman Produk</h1>
+<h1>Produk</h1>
 
 @can('create', App\Models\Produk::class)
 <a href="{{ route('produk.create') }}" class="btn btn-primary mb-3">create</a>
@@ -17,7 +17,7 @@
             name="search" 
             value="{{ request('search') }}" 
             class="form-control" 
-            placeholder="Search nama produk"
+            placeholder="Cari Produk"
         >
         <button class="btn btn-outline-secondary" type="submit">
             Search

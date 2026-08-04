@@ -31,12 +31,13 @@ body {
     font-weight: bold;
 }
 
+
 /* Aksen garis kiri untuk Pembayaran */
 .card-payment-tunai {
-    border-left: 5px solid #198754;
+    border-left: 5px solid #0d6efd;
 }
 .card-payment-nontunai {
-    border-left: 5px solid #6f42c1;
+    border-left: 5px solid #0d6efd;
 }
 
 .wrapper {

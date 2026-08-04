@@ -37,7 +37,7 @@
         <!-- Cash & Payment Status -->
         <div class="row mb-3">
             <div class="col-md-12">
-                <h3 class="fw-bold text-success mb-3 fs-4">Cash &amp; Payment Status</h3>
+                <h3 class="fw-bold text-primary mb-3 fs-4">Cash &amp; Payment Status</h3>
             </div>
             <div class="col-12 col-md-6 mb-3">
                 <div class="card-sales card-payment-tunai shadow-sm">

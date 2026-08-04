@@ -5,7 +5,7 @@
 @section('content')
 <div class="container-fluid px-0">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 fw-bold text-dark mb-0">Halaman Users</h1>
+        <h1 class="h3 fw-bold text-dark mb-0">Users</h1>
         <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg me-1"></i> Create User
         </a>
@@ -19,11 +19,11 @@
                 name="search" 
                 value="{{ request('search') }}" 
                 class="form-control" 
-                placeholder="Search username"
+                placeholder="Cari Username"
             >
             <button class="btn btn-outline-secondary" type="submit">
                 <i class="bi bi-search me-1"></i> Search
-            </button>
+            </button>   
             @if(request('search'))
             <a class="btn btn-outline-primary" href="{{ route('admin.users')}}">Reset</a>
             @endif
