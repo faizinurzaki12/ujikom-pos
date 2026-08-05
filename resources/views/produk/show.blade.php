@@ -28,111 +28,50 @@
 
                 <div class="card-body p-0">
 
-                    <!-- ================= SKELETON SCREEN (Dikomentari) ================= -->
-                    <!--
-                    <div id="skeleton-state" class="placeholder-glow">
-                        @if($produk->foto)
-                            <div class="text-center p-4 border-bottom">
-                                <span class="placeholder rounded bg-secondary opacity-25" style="width: 160px; height: 160px; display: inline-block;"></span>
-                            </div>
-                        @endif
-
-                        <div class="table-responsive">
-                            <table class="table table-borderless mb-0 align-middle">
-                                <tbody>
-                                    <tr class="bg-light bg-opacity-50">
-                                        <td class="fw-semibold px-4 py-3" style="width: 35%;">
-                                            <span class="placeholder col-8 bg-secondary opacity-25"></span>
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <span class="placeholder col-7 bg-secondary opacity-25"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-semibold px-4 py-3">
-                                            <span class="placeholder col-9 bg-secondary opacity-25"></span>
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <span class="placeholder rounded-pill col-6 bg-secondary opacity-25" style="height: 24px; display: inline-block;"></span>
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-light bg-opacity-50">
-                                        <td class="fw-semibold px-4 py-3">
-                                            <span class="placeholder col-6 bg-secondary opacity-25"></span>
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <span class="placeholder col-5 bg-secondary opacity-25"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-semibold px-4 py-3">
-                                            <span class="placeholder col-6 bg-secondary opacity-25"></span>
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <span class="placeholder col-5 bg-secondary opacity-25"></span>
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-light bg-opacity-50">
-                                        <td class="fw-semibold px-4 py-3">
-                                            <span class="placeholder col-4 bg-secondary opacity-25"></span>
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <span class="placeholder rounded col-4 bg-secondary opacity-25" style="height: 22px; display: inline-block;"></span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    @if($produk->foto)
+                        <div class="text-center p-4 border-bottom">
+                            <img src="{{ asset('storage/'.$produk->foto) }}" alt="{{ $produk->nama }}"
+                                class="rounded" style="width: 160px; height: 160px; object-fit: cover;">
                         </div>
-                    </div>
-                    -->
+                    @endif
 
-                    <!-- ================= KONTEN ASLI LARAVEL ================= -->
-                    <div id="content-state"> <!-- d-none dihapus agar langsung tampil -->
-                        @if($produk->foto)
-                            <div class="text-center p-4 border-bottom">
-                                <img src="{{ asset('storage/'.$produk->foto) }}" alt="{{ $produk->nama }}"
-                                    class="rounded" style="width: 160px; height: 160px; object-fit: cover;">
-                            </div>
-                        @endif
-
-                        <div class="table-responsive">
-                            <table class="table table-borderless mb-0 align-middle">
-                                <tbody>
-                                    <tr class="bg-light bg-opacity-50">
-                                        <td class="fw-semibold px-4 py-3" style="width: 35%;">Nama Produk</td>
-                                        <td class="px-4 py-3">{{ $produk->nama }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-semibold px-4 py-3">Ditambahkan oleh</td>
-                                        <td class="px-4 py-3">
-                                            <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill">
-                                                {{ $produk->user->name }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-light bg-opacity-50">
-                                        <td class="fw-semibold px-4 py-3">Harga Beli</td>
-                                        <td class="px-4 py-3">Rp {{ number_format($produk->harga_beli, 0, ',', '.') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-semibold px-4 py-3">Harga Jual</td>
-                                        <td class="px-4 py-3">Rp {{ number_format($produk->harga_jual, 0, ',', '.') }}</td>
-                                    </tr>
-                                    <tr class="bg-light bg-opacity-50">
-                                        <td class="fw-semibold px-4 py-3">Stok</td>
-                                        <td class="px-4 py-3">
-                                            @if($produk->stok <= 0)
-                                                <span class="badge bg-danger">Habis</span>
-                                            @elseif($produk->stok < 5)
-                                                <span class="badge bg-warning text-dark">{{ $produk->stok }} (Rendah)</span>
-                                            @else
-                                                <span class="badge bg-success">{{ $produk->stok }}</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-borderless mb-0 align-middle">
+                            <tbody>
+                                <tr class="bg-light bg-opacity-50">
+                                    <td class="fw-semibold px-4 py-3" style="width: 35%;">Nama Produk</td>
+                                    <td class="px-4 py-3">{{ $produk->nama }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold px-4 py-3">Ditambahkan oleh</td>
+                                    <td class="px-4 py-3">
+                                        <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill">
+                                            {{ $produk->user->name }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="bg-light bg-opacity-50">
+                                    <td class="fw-semibold px-4 py-3">Harga Beli</td>
+                                    <td class="px-4 py-3">Rp {{ number_format($produk->harga_beli, 0, ',', '.') }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold px-4 py-3">Harga Jual</td>
+                                    <td class="px-4 py-3">Rp {{ number_format($produk->harga_jual, 0, ',', '.') }}</td>
+                                </tr>
+                                <tr class="bg-light bg-opacity-50">
+                                    <td class="fw-semibold px-4 py-3">Stok</td>
+                                    <td class="px-4 py-3">
+                                        @if($produk->stok <= 0)
+                                            <span class="badge bg-danger">Habis</span>
+                                        @elseif($produk->stok < 5)
+                                            <span class="badge bg-warning text-dark">{{ $produk->stok }} (Rendah)</span>
+                                        @else
+                                            <span class="badge bg-success">{{ $produk->stok }}</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
@@ -140,9 +79,6 @@
                 <!-- Card Footer -->
                 <div class="card-footer bg-white d-flex gap-2 justify-content-end">
                     <a href="{{ route('produk.index') }}" class="btn btn-secondary btn-sm">Kembali</a>
-                    @can('update', $produk)
-                        <a href="{{ route('produk.edit', $produk) }}" class="btn btn-warning btn-sm">Edit</a>
-                    @endcan
                 </div>
             </div>
         </div>
@@ -150,19 +86,6 @@
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Script Loading (Dikomentari) -->
-    <!--
-    <script>
-        const skeletonState = document.getElementById("skeleton-state");
-        const contentState = document.getElementById("content-state");
-
-        window.addEventListener("load", function () {
-            skeletonState.classList.add("d-none");
-            contentState.classList.remove("d-none");
-        });
-    </script>
-    -->
 </body>
 
 </html>
