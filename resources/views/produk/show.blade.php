@@ -28,7 +28,8 @@
 
                 <div class="card-body p-0">
 
-                    <!-- ================= SKELETON SCREEN (Loading State) ================= -->
+                    <!-- ================= SKELETON SCREEN (Dikomentari) ================= -->
+                    <!--
                     <div id="skeleton-state" class="placeholder-glow">
                         @if($produk->foto)
                             <div class="text-center p-4 border-bottom">
@@ -83,9 +84,10 @@
                             </table>
                         </div>
                     </div>
+                    -->
 
-                    <!-- ================= KONTEN ASLI LARAVEL (Disembunyikan saat Loading) ================= -->
-                    <div id="content-state" class="d-none">
+                    <!-- ================= KONTEN ASLI LARAVEL ================= -->
+                    <div id="content-state"> <!-- d-none dihapus agar langsung tampil -->
                         @if($produk->foto)
                             <div class="text-center p-4 border-bottom">
                                 <img src="{{ asset('storage/'.$produk->foto) }}" alt="{{ $produk->nama }}"
@@ -149,17 +151,18 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script Pure Real Network Loading -->
+    <!-- Script Loading (Dikomentari) -->
+    <!--
     <script>
         const skeletonState = document.getElementById("skeleton-state");
         const contentState = document.getElementById("content-state");
 
-        // Fungsi dijalankan otomatis begitu halaman selesai di-load oleh browser & server
         window.addEventListener("load", function () {
             skeletonState.classList.add("d-none");
             contentState.classList.remove("d-none");
         });
     </script>
+    -->
 </body>
 
 </html>

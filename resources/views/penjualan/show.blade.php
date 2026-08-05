@@ -23,7 +23,8 @@
           </div>
 
           <div class="card-body p-0">
-            <!-- ================= BAGIAN A: SKELETON SCREEN ================= -->
+            <!-- ================= BAGIAN A: SKELETON SCREEN (Dikomentari) ================= -->
+            <!--
             <div id="skeleton-state" class="placeholder-glow">
               <!-- Skeleton Info Transaksi -->
               <div class="table-responsive border-bottom">
@@ -98,9 +99,10 @@
                 </div>
               </div>
             </div>
+            -->
 
             <!-- ================= BAGIAN B: KONTEN ASLI LARAVEL ================= -->
-            <div id="content-state" class="d-none">
+            <div id="content-state"> <!-- d-none dihapus agar langsung tampil -->
               <!-- ==== INFO TRANSAKSI ==== -->
               <div class="table-responsive border-bottom">
                 <table class="table table-borderless mb-0 align-middle">
@@ -184,16 +186,17 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script Pengontrol State Murni Berdasarkan Muatan Jaringan -->
+    <!-- Script Pengontrol State (Dikomentari) -->
+    <!--
     <script>
       const skeletonState = document.getElementById("skeleton-state");
       const contentState = document.getElementById("content-state");
 
-      // Berjalan otomatis begitu halaman selesai di-load oleh browser & server (tanpa jeda simulasi)
       window.addEventListener("load", function () {
         skeletonState.classList.add("d-none");
         contentState.classList.remove("d-none");
       });
     </script>
+    -->
   </body>
 </html>

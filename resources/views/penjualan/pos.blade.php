@@ -6,16 +6,18 @@
 
 <div class="position-relative" style="min-height: 80vh;">
 
-    <!-- ================= SPINNER (Loading State) ================= -->
+    <!-- ================= SPINNER (Loading State - Dikomentari) ================= -->
+    <!--
     <div id="loading-state" class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-white" style="z-index: 1000;">
         <div class="spinner-border text-primary mb-2" role="status" style="width: 3rem; height: 3rem;">
             <span class="visually-hidden">Loading...</span>
         </div>
         <span class="text-muted fw-medium">Memuat halaman...</span>
     </div>
+    -->
 
-    <!-- ================= KONTEN ASLI LARAVEL (Disembunyikan saat Loading) ================= -->
-    <div id="content-state" class="d-none">
+    <!-- ================= KONTEN ASLI LARAVEL ================= -->
+    <div id="content-state"> <!-- d-none dihapus agar langsung tampil -->
         <div class="container pb-4" style="max-width: 1200px">
             <!-- Tombol Kembali -->
             <div class="mb-3">
@@ -186,11 +188,11 @@
 
 </div>
 
-<!-- Script Pure Real Network Loading (sama seperti halaman Detail Produk) -->
+<!-- Script Loading (Dikomentari) -->
+<!--
 <script>
     const mainContent = document.querySelector('.main-content');
 
-    // Matikan auto-scroll browser ke posisi terakhir saat reload
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
@@ -205,5 +207,6 @@
         contentState.classList.remove("d-none");
     });
 </script>
+-->
 
-@endsection
+@endsectionz
