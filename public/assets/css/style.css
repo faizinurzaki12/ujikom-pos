@@ -19,10 +19,10 @@ body {
     border-left: 5px solid #0d6efd;
 }
 .text-sales {
-    font-size: 14px;
-    color: #6c757d;
+    font-size: 22px;
+    /* color: #6c757d; */
     text-align: start;
-    font-weight: 500;
+    font-weight: bold;
 }
 .text-sale {
     margin-top: 8px;
