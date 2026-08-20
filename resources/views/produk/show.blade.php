@@ -79,11 +79,6 @@
                     </div>
 
                 </div>
-
-                <!-- Card Footer -->
-                <div class="card-footer bg-white d-flex gap-2 justify-content-end">
-                    <a href="{{ route('produk.index') }}" class="btn btn-secondary btn-sm">Kembali</a>
-                </div>
             </div>
         </div>
     </div>

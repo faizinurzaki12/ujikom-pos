@@ -103,10 +103,6 @@
               </div>
             </div>
           </div>
-
-          <div class="card-footer bg-white d-flex gap-2 justify-content-end">
-            <a href="{{ route('penjualan.index') }}" class="btn btn-secondary btn-sm">Kembali</a>
-          </div>
         </div>
       </div>
     </div>
