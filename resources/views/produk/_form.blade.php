@@ -1,4 +1,4 @@
-    @csrf
+@csrf
 @if (!empty($produk->foto))
     <div class="mb-2">
         <label>Foto Saat Ini</label><br>
@@ -29,6 +29,7 @@
             <img id="preview" class="img-thumbnail mt-2" style="display: none;" width="150">
         </div>
     </div>
+
     <!-- untuk nama produknya -->
     <div class="col-md-12">
         <label for="validationServerName" class="form-label">Nama Produk</label>
@@ -37,6 +38,28 @@
                value="{{ old('name' , $produk->nama ?? '') }}">
         @error('name')
             <div id="validationServerNameFeedback" class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+    </div>
+
+    <!-- select jenis produk -->
+    <div class="col-md-12">
+        <label for="validationServerJenis" class="form-label">Jenis Produk</label>
+        <select name="jenis_id" id="validationServerJenis"
+                class="form-select @error('jenis_id') is-invalid @enderror">
+            <option value="" disabled {{ old('jenis_id', $produk->jenis_id ?? '') ? '' : 'selected' }}>
+                -- Pilih Jenis --
+            </option>
+            @foreach($jenisList as $jenis)
+                <option value="{{ $jenis->id }}"
+                    {{ (int) old('jenis_id', $produk->jenis_id ?? '') === $jenis->id ? 'selected' : '' }}>
+                    {{ $jenis->nama_jenis }}
+                </option>
+            @endforeach
+        </select>
+        @error('jenis_id')
+            <div id="validationServerJenisFeedback" class="invalid-feedback d-block">
                 {{ $message }}
             </div>
         @enderror
@@ -89,17 +112,13 @@
 
 <script>
     function previewImage(input) {
-        // 1. Mengubah nama variabel agar konsisten (preView -> preview)
         const preview = document.getElementById('preview');
-        
-        // 2. Menggunakan tanda kurung siku [0] bukan kurung biasa (0) untuk mengambil file
         const file = input.files[0];
 
         if (file) {
             preview.src = URL.createObjectURL(file);
             preview.style.display = 'block';
         } else {
-            // Opsional: Sembunyikan kembali jika user membatalkan pilihan gambar
             preview.style.display = 'none';
         }
     }

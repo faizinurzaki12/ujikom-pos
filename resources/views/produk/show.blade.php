@@ -42,6 +42,10 @@
                                     <td class="fw-semibold px-4 py-3" style="width: 35%;">Nama Produk</td>
                                     <td class="px-4 py-3">{{ $produk->nama }}</td>
                                 </tr>
+                                <tr class="bg-light bg-opacity-50">
+                                    <td class="fw-semibold px-4 py-3" style="width: 35%;">Jenis</td>
+                                    <td class="px-4 py-3">{{ $produk->jenis->nama_jenis ?? '-' }}</td>
+                                </tr>
                                 <tr>
                                     <td class="fw-semibold px-4 py-3">Ditambahkan oleh</td>
                                     <td class="px-4 py-3">

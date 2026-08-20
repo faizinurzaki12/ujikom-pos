@@ -19,8 +19,7 @@ class PenjualanController extends Controller
         $keyword = $request->input('search');
 
         $sales = Penjualan::query()
-
-        // 🔒 Filter berdasarkan role
+        ->with(['user', 'itemPenjualan.produk.jenis'])
         ->when($user->role->name === 'kasir', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })

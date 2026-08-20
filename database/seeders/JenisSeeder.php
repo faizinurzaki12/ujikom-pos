@@ -4,21 +4,15 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Role;
+use App\Models\Jenis;
 
-class RoleSeeder extends Seeder
+class JenisSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Role::firstOrCreate(
-            ['name' => 'admin']
-        );
-
-        Role::firstOrCreate(
-            ['name' => 'kasir']
-        );
+        Jenis::factory()->count(8)->create();
     }
 }

@@ -71,6 +71,7 @@
                   <thead class="table-light">
                     <tr>
                       <th>Produk</th>
+                      <th class="text-center">Jenis</th>
                       <th class="text-end">Harga Satuan</th>
                       <th class="text-center">Qty</th>
                       <th class="text-end">Subtotal</th>
@@ -79,14 +80,22 @@
                   <tbody>
                     @forelse($penjualan->itemPenjualan as $item)
                       <tr>
-                        <td>{{ $item->produk->nama }}</td>
+                        <td>{{ $item->produk->nama ?? '-' }}</td>
+                        
+                        <!-- Menampilkan Jenis Produk -->
+                        <td class="text-center">
+                            <span class="badge bg-info text-dark" style="font-size: 0.75rem;">
+                                {{ $item->produk->jenis->nama_jenis ?? '-' }}
+                            </span>
+                        </td>
+
                         <td class="text-end">Rp {{ number_format($item->harga_satuan, 0, ',', '.') }}</td>
                         <td class="text-center">{{ $item->kuantitas }}</td>
                         <td class="text-end">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
                       </tr>
                     @empty
                       <tr>
-                        <td colspan="4" class="text-center text-muted py-3">Tidak ada item</td>
+                        <td colspan="5" class="text-center text-muted py-3">Tidak ada item</td>
                       </tr>
                     @endforelse
                   </tbody>

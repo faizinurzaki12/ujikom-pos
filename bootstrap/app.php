@@ -18,7 +18,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Tangkap semua error HTTP termasuk 403
         $exceptions->render(function (HttpException $e, Request $request) {
             if ($e->getStatusCode() == 403) {
                 return response()->view('errors.403', ['exception' => $e], 403);

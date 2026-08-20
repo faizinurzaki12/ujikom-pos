@@ -33,6 +33,7 @@
     <tr>
         <th scope="col">#</th>
         <th scope="col">User</th>
+        <th scope="col">Jenis</th>
         <th scope="col">Foto</th>
         <th scope="col">Nama</th>
         <th scope="col">Harga Beli</th>
@@ -46,6 +47,7 @@
     <tr>
         <th scope="row">{{ $products->firstItem() + $loop->index }}</th>
         <td>{{ $product->user->name }}</td>
+        <td>{{ $product->jenis->nama_jenis ?? '-' }}</td>
         <td>
             <img src="{{ asset('storage/' .$product->foto) }}" width="100" alt="" class="img-thumbnail">
         </td>

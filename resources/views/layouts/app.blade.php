@@ -31,6 +31,9 @@
                 </li>
                 @endcan
                 <li class="nav-item">
+                    <a class="nav-link {{ Request::is('jenis*') ? 'active' : '' }}" href="{{ route('jenis.index') }}">Jenis</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ Request::is('produk*') ? 'active' : '' }}" href="{{ route('produk.index') }}">Produk</a>
                 </li>
                 <li class="nav-item">
@@ -93,10 +96,17 @@
                 </div>
             </nav>
 
-            <div class="main-content">
+            <div class="main-content {{ Request::routeIs('dashboard') || Request::routeIs('laporan.bulanan') ? 'no-page-scroll' : '' }}">
                 @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+
+                @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif

@@ -7,8 +7,11 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ItemPenjualanController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\JenisController;
 use App\Http\Controllers\LaporanController;
-
+use App\Http\Controllers\PercabanganController;
+use App\Http\Controllers\PerulanganController;
+use App\Http\Controllers\variabelController;
 
 // route yang bisa di akses ketika user belum login 
 Route::middleware('guest')->group(function() {
@@ -24,6 +27,10 @@ Route::middleware('auth')->group(function() {
     ->name('laporan.bulanan')
     ->middleware('auth');
 
+    Route::get('/perulangan', [PerulanganController::class, 'index'])->name('perulangan');
+    Route::get('/percabangan', [PercabanganController::class, 'index'])->name('percabangan');
+    Route::get('/variabel', [variabelController::class, 'index'])->name('variabel');
+
     // Khusus admin — users
     Route::middleware('role:admin')->name('admin.')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users');
@@ -38,6 +45,7 @@ Route::middleware('auth')->group(function() {
     Route::middleware('role:admin,kasir')->group(function() {
         Route::resource('/produk', ProdukController::class);
         Route::resource('/penjualan', PenjualanController::class);
+        Route::resource('jenis', JenisController::class)->parameters(['jenis' => 'jenis']);
         Route::resource('/itempenjualan', ItemPenjualanController::class);
     });
 });

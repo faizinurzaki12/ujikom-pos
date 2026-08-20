@@ -91,6 +91,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>Produk</th>
+                                    <th>Jenis</th>
                                     <th>Harga</th>
                                     <th style="width: 90px">Qty</th>
                                     <th>Subtotal</th>
@@ -101,6 +102,7 @@
                                 @forelse($sale->itemPenjualan as $item)
                                 <tr>
                                     <td>{{ $item->produk->nama }}</td>
+                                    <td>{{ $item->produk->jenis->nama_jenis ?? '-' }}</td>
                                     <td>Rp {{ number_format($item->produk->harga_jual, 0, ',', '.') }}</td>
                                     <td>
                                         <form method="POST" action="{{ route('itempenjualan.update', $item->id) }}">

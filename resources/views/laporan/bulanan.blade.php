@@ -3,76 +3,77 @@
 @section('title', 'Rekap Bulanan')
 
 @section('content')
-<div class="container-fluid px-0">
+<div class="dashboard-flex">
     <!-- Header & Filter Bulan/Tahun -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-2">
-        <h5 class="fw-bold mb-0">
-            Rekap Bulanan
-            <small class="text-muted fs-5 d-block d-md-inline">({{ $namaBulanTahun }})</small>
-        </h5>
+    <div class="row-stat">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
+            <h5 class="fw-bold mb-0">
+                Rekap Bulanan
+                <small class="text-muted fs-5 d-block d-md-inline">({{ $namaBulanTahun }})</small>
+            </h5>
 
-        <form method="GET" action="{{ route('laporan.bulanan') }}" class="d-flex gap-2">
-            <select name="bulan" class="form-select">
-                @foreach(range(1, 12) as $m)
-                    <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
-                        {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
-                    </option>
-                @endforeach
-            </select>
+            <form method="GET" action="{{ route('laporan.bulanan') }}" class="d-flex gap-2">
+                <select name="bulan" class="form-select form-select-sm">
+                    @foreach(range(1, 12) as $m)
+                        <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
+                            {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                        </option>
+                    @endforeach
+                </select>
 
-            <select name="tahun" class="form-select">
-                @foreach($daftarTahun as $t)
-                    <option value="{{ $t }}" {{ $tahun == $t ? 'selected' : '' }}>{{ $t }}</option>
-                @endforeach
-            </select>
+                <select name="tahun" class="form-select form-select-sm">
+                    @foreach($daftarTahun as $t)
+                        <option value="{{ $t }}" {{ $tahun == $t ? 'selected' : '' }}>{{ $t }}</option>
+                    @endforeach
+                </select>
 
-            <button type="submit" class="btn btn-primary text-nowrap">
-                <i class="bi bi-search me-1"></i> Tampilkan
-            </button>
-        </form>
+                <button type="submit" class="btn btn-primary btn-sm text-nowrap">
+                    <i class="bi bi-search me-1"></i> Tampilkan
+                </button>
+            </form>
+        </div>
+
+        <!-- Ringkasan Total Bulanan (2x2 sesuai struktur awal) -->
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <h6 class="fw-bold text-primary mb-2">Ringkasan Bulan Ini</h6>
+            </div>
+            <div class="col-12 col-md-6 mb-2">
+                <div class="card-sales sales compact shadow-sm">
+                    <div class="text-sales">Total Penjualan</div>
+                    <div class="text-sale">Rp {{ number_format($ringkasan['total_penjualan'], 0, ',', '.') }}</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mb-2">
+                <div class="card-sales sales compact shadow-sm">
+                    <div class="text-sales">Jumlah Transaksi</div>
+                    <div class="text-sale">{{ $ringkasan['total_transaksi'] }} Transaksi</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mb-2">
+                <div class="card-sales card-payment-tunai compact shadow-sm">
+                    <div class="text-sales">Total Pembayaran Tunai</div>
+                    <div class="text-sale">Rp {{ number_format($ringkasan['total_cash'], 0, ',', '.') }}</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mb-2">
+                <div class="card-sales card-payment-nontunai compact shadow-sm">
+                    <div class="text-sales">Total Pembayaran Non-Tunai</div>
+                    <div class="text-sale">Rp {{ number_format($ringkasan['total_non_tunai'], 0, ',', '.') }}</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Ringkasan Total Bulanan -->
-    <div class="row mb-3">
+    <!-- Area Tabel (Gunakan flex agar tabel otomatis membagi ruang sisa layar) -->
+    <div class="row-table-flex row g-2">
+        <!-- Tabel Rekap Harian dalam Bulan -->
         <div class="col-md-12">
-            <h3 class="fw-bold text-primary mb-3 fs-4">Ringkasan Bulan Ini</h3>
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-            <div class="card-sales sales shadow-sm">
-                <div class="text-sales">Total Penjualan</div>
-                <div class="text-sale">Rp {{ number_format($ringkasan['total_penjualan'], 0, ',', '.') }}</div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-            <div class="card-sales sales shadow-sm">
-                <div class="text-sales">Jumlah Transaksi</div>
-                <div class="text-sale">{{ $ringkasan['total_transaksi'] }} Transaksi</div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-            <div class="card-sales card-payment-tunai shadow-sm">
-                <div class="text-sales">Total Pembayaran Tunai</div>
-                <div class="text-sale">Rp {{ number_format($ringkasan['total_cash'], 0, ',', '.') }}</div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-            <div class="card-sales card-payment-nontunai shadow-sm">
-                <div class="text-sales">Total Pembayaran Non-Tunai</div>
-                <div class="text-sale">Rp {{ number_format($ringkasan['total_non_tunai'], 0, ',', '.') }}</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tabel Rekap Harian dalam Bulan -->
-    <div class="row mb-3">
-        <div class="col-md-12 mb-2">
-            <h3 class="fs-4 fw-bold text-dark">Rekap Harian</h3>
-        </div>
-        <div class="col-md-12">
-            <div class="card border-0 shadow-sm p-3 bg-white rounded-3">
+            <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
+                <h6 class="fw-bold text-dark mb-2">Rekap Harian</h6>
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+                    <table class="table table-sm table-hover align-middle mb-0">
+                        <thead class="table-light sticky-top">
                             <tr>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col" class="text-center">Jumlah Transaksi</th>
@@ -107,8 +108,8 @@
                             @endforelse
                         </tbody>
                         @if($rekapHarian->isNotEmpty())
-                        <tfoot>
-                            <tr class="table-light fw-bold">
+                        <tfoot class="sticky-bottom table-light">
+                            <tr class="fw-bold">
                                 <td>Total</td>
                                 <td class="text-center">{{ $ringkasan['total_transaksi'] }}</td>
                                 <td class="text-center">{{ $rekapHarian->sum('total_kuantitas') }} Pcs</td>
@@ -122,18 +123,14 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Tabel Produk Terlaris Bulanan -->
-    <div class="row">
-        <div class="col-md-12 mb-2">
-            <h3 class="fs-4 fw-bold text-dark">Produk Terlaris Bulan Ini</h3>
-        </div>
+        <!-- Tabel Produk Terlaris Bulanan -->
         <div class="col-md-12">
-            <div class="card border-0 shadow-sm p-3 bg-white rounded-3">
+            <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
+                <h6 class="fw-bold text-dark mb-2">Produk Terlaris Bulan Ini</h6>
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+                    <table class="table table-sm table-hover align-middle mb-0">
+                        <thead class="table-light sticky-top">
                             <tr class="table-dark">
                                 <th scope="col">Nama Produk</th>
                                 <th scope="col">Stok Tersedia</th>
