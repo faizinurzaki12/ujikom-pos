@@ -97,20 +97,23 @@
             </nav>
 
             <div class="main-content {{ Request::routeIs('dashboard') || Request::routeIs('laporan.bulanan') ? 'no-page-scroll' : '' }}">
-                @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+               @if(session('success'))
+                <div class="popup-alert-overlay" id="popupAlert">
+                    <div class="popup-alert popup-success">
+                        <i class="bi bi-check-circle-fill popup-icon"></i>
+                        <p class="popup-message">{{ session('success') }}</p>
+                    </div>
                 </div>
                 @endif
 
                 @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div class="popup-alert-overlay" id="popupAlert">
+                    <div class="popup-alert popup-error">
+                        <i class="bi bi-x-circle-fill popup-icon"></i>
+                        <p class="popup-message">{{ session('error') }}</p>
+                    </div>
                 </div>
                 @endif
-
                 @yield('content')
             </div>
         </div>
@@ -128,6 +131,15 @@
         }
         if(closeBtn) {
             closeBtn.addEventListener('click', () => { sidebar.classList.remove('show'); });
+        }
+
+        const popupAlert = document.getElementById('popupAlert');
+        if (popupAlert) {
+            setTimeout(() => {
+                popupAlert.classList.add('popup-hide');
+                // hapus dari DOM setelah animasi fade selesai
+                setTimeout(() => popupAlert.remove(), 400);
+            }, 3000);
         }
     </script>
 </body>

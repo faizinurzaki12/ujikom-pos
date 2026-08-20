@@ -32,7 +32,6 @@ body {
     font-weight: bold;
 }
 
-
 /* Aksen garis kiri untuk Pembayaran */
 .card-payment-tunai {
     border-left: 5px solid #0d6efd;
@@ -99,7 +98,7 @@ body {
     width: 6px;
 }
 .card-table-flex .table-responsive::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
 .main-container {
@@ -182,6 +181,66 @@ body {
 .logout .nav-link:hover {
     background-color: rgba(220, 53, 69, 0.2);
     color: #dc3545 !important;
+}
+
+.popup-alert-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+}
+
+.popup-alert-overlay.popup-hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popup-alert {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    min-width: 260px;
+    max-width: 90vw;
+    animation: popupZoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popupZoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.popup-icon {
+    font-size: 2.75rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.popup-success .popup-icon {
+    color: #198754;
+}
+
+.popup-error .popup-icon {
+    color: #dc3545;
+}
+
+.popup-message {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #212529;
 }
 @media (max-width: 991.98px) {
     .sidebar {
