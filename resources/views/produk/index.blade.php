@@ -77,7 +77,7 @@
     </tr>
     @empty
     <tr>
-        <td colspan="8" class="text-center py-4">
+        <td colspan="9" class="text-center py-4">
             <h5 class="mb-0 text-muted"> <i class="bi bi-box-seam"></i> Produk Tidak tersedia.</h5>
         </td>
     </tr>

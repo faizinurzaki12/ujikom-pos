@@ -211,6 +211,27 @@ body {
     animation: popupZoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Menjaga area flex tidak melimpah melebih batas viewport */
+.row-table-flex {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden; /* Mengunci overflow ke bawah */
+}
+
+/* Memastikan wrapper scroll pada tabel berfungsi internal */
+.card-table-flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+.card-table-flex .table-responsive {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto; /* Scrollbar hanya muncul di dalam tabel jika data panjang */
+}
+
 @keyframes popupZoomIn {
     from {
         opacity: 0;

@@ -30,7 +30,6 @@
         </div>
     </form>
 
-    <!-- Tabel Data (Dibungkus Card dengan desain modern) -->
     <div class="card border-0 shadow-sm p-3 bg-white rounded-3">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
@@ -82,7 +81,6 @@
             </table>
         </div>
         
-        <!-- Pagination (Opsional jika Anda menggunakan pagination di controller) -->
         @if(method_exists($users, 'links'))
         <div class="mt-3">
             {{ $users->withQueryString()->links() }}

@@ -30,9 +30,11 @@
                     <a class="nav-link {{ Request::is('users*') ? 'active' : '' }}" href="{{ url('users') }}">Users</a>
                 </li>
                 @endcan
+                @can('viewAny', App\Models\User::class)
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('jenis*') ? 'active' : '' }}" href="{{ route('jenis.index') }}">Jenis</a>
                 </li>
+                @endcan
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('produk*') ? 'active' : '' }}" href="{{ route('produk.index') }}">Produk</a>
                 </li>

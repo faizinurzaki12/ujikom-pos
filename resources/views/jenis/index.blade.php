@@ -11,11 +11,7 @@
         </a>
     </div>
 
-    {{-- Alert success/error TIDAK ditaruh di sini lagi -- sudah ditangani
-         terpusat di layouts/app.blade.php, supaya tidak dobel dan berlaku
-         otomatis untuk semua halaman (produk, penjualan, dll juga). --}}
-
-    <!-- Button Search -->
+    <!-- Button untuk cari -->
     <form action="{{ route('jenis.index') }}" method="GET" class="d-flex mb-4">
         <div class="input-group shadow-sm">
             <input

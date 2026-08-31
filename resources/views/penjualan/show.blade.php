@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detail Penjualan - POS</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   </head>
 
@@ -63,7 +62,7 @@
               </table>
             </div>
 
-            <!-- ==== RINCIAN BARANG ==== -->
+            <!-- rincian barang -->
             <div class="p-4">
               <h6 class="fw-semibold mb-2">Rincian Barang</h6>
               <div class="table-responsive">

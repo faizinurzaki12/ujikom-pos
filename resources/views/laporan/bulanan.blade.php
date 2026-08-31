@@ -33,7 +33,7 @@
             </form>
         </div>
 
-        <!-- Ringkasan Total Bulanan (2x2 sesuai struktur awal) -->
+        <!-- Ringkasan Total Bulanan -->
         <div class="row mb-2">
             <div class="col-md-12">
                 <h6 class="fw-bold text-primary mb-2">Ringkasan Bulan Ini</h6>
@@ -65,19 +65,19 @@
         </div>
     </div>
 
-    <!-- Area Tabel (Gunakan flex agar tabel otomatis membagi ruang sisa layar) -->
+    <!-- Area Tabel (Side-by-side untuk menghemat area vertikal) -->
     <div class="row-table-flex row g-2">
         <!-- Tabel Rekap Harian dalam Bulan -->
-        <div class="col-md-12">
-            <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
+        <div class="col-lg-7 col-12 h-100">
+            <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3 h-100">
                 <h6 class="fw-bold text-dark mb-2">Rekap Harian</h6>
                 <div class="table-responsive">
                     <table class="table table-sm table-hover align-middle mb-0">
                         <thead class="table-light sticky-top">
                             <tr>
                                 <th scope="col">Tanggal</th>
-                                <th scope="col" class="text-center">Jumlah Transaksi</th>
-                                <th scope="col" class="text-center">Kuantitas Terjual</th>
+                                <th scope="col" class="text-center">Jml Transaksi</th>
+                                <th scope="col" class="text-center">Kuantitas</th>
                                 <th scope="col" class="text-end">Total Penjualan</th>
                                 <th scope="col" class="text-end">Tunai</th>
                                 <th scope="col" class="text-end">Non-Tunai</th>
@@ -125,8 +125,8 @@
         </div>
 
         <!-- Tabel Produk Terlaris Bulanan -->
-        <div class="col-md-12">
-            <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
+        <div class="col-lg-5 col-12 h-100">
+            <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3 h-100">
                 <h6 class="fw-bold text-dark mb-2">Produk Terlaris Bulan Ini</h6>
                 <div class="table-responsive">
                     <table class="table table-sm table-hover align-middle mb-0">

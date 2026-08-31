@@ -7,7 +7,6 @@
   <div class="col-auto">
     <div class="card login-card-anim text-center shadow-lg p-4 bg-white rounded-4" style="width: 23rem; border: none;">
 
-      <!-- Logo / Ikon Konter HP -->
       <div class="brand-icon text-white">
         <i class="bi bi-phone-vibrate fs-2"></i>
       </div>
@@ -41,16 +40,6 @@
             @enderror
           </div>
 
-          <!-- <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="form-check text-start">
-              <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
-              <label class="form-check-label small text-muted" for="rememberMe">
-                Ingat saya
-              </label>
-            </div>
-            <a href="#" class="small text-decoration-none fw-semibold">Lupa PIN?</a>
-          </div> -->
-
           <button type="submit" id="btnSubmit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm">
             <i class="bi bi-box-arrow-in-right me-1"></i> Login
           </button>
@@ -58,7 +47,7 @@
       </div>
 
       <!-- <div class="mt-4 pt-3 border-top">
-        <small class="text-muted" style="font-size: 0.75rem;">CellularPOS v2.0 &bull; Akses Kasir & Teknisi</small>
+        <small class="text-muted" style="font-size: 0.75rem;">CellularPOS v1.0 &bull; Akses Kasir & Teknisi</small>
       </div> -->
 
     </div>
@@ -68,10 +57,7 @@
 <script>
   document.getElementById('formLogin').addEventListener('submit', function(e) {
     const btn = document.getElementById('btnSubmit');
-    // ubah tombol menjadi disabled agar tidak bisa di klik dua kali
     btn.disabled = true;
-
-    // ganti teks tombol lalu tambahkan spinner bawaan bootstrap
     btn.innerHTML = `
     <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
     Tunggu bentar....

@@ -69,7 +69,9 @@
                         </div>
 
                         <div class="col-2">
-                            <button type="submit" class="btn btn-primary w-100 {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}">+</button>
+                            <button type="submit" class="btn btn-primary w-100 {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}">
+                                +
+                            </button>
                         </div>
                     </form>
                     @endforeach
@@ -77,8 +79,7 @@
                 </div>
             </div>
         </div>
-
-        {{-- ================== KERANJANG ================== --}}
+        
         <div class="col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
