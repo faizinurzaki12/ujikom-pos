@@ -1,43 +1,16 @@
+/* ==========================================================================
+   Base & Layout Defaults
+   ========================================================================== */
 body {
     overflow-x: hidden;
     background-color: #f8f9fa;
     margin: 0;
 }
+
 .judul {
     width: fit-content;
     font-size: 16px;
     cursor: pointer;
-}
-
-/* card untuk sales penjualan hari ini dan jumlah transaksi */
-.card-sales {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    border: none;
-}
-.sales {
-    border-left: 5px solid #0d6efd;
-}
-.text-sales {
-    font-size: 22px;
-    /* color: #6c757d; */
-    text-align: start;
-    font-weight: bold;
-}
-.text-sale {
-    margin-top: 8px;
-    color: #212529;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-/* Aksen garis kiri untuk Pembayaran */
-.card-payment-tunai {
-    border-left: 5px solid #0d6efd;
-}
-.card-payment-nontunai {
-    border-left: 5px solid #0d6efd;
 }
 
 .wrapper {
@@ -46,13 +19,37 @@ body {
     min-height: 100vh;
     position: relative;
 }
+
+.main-container {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+.navbar-top {
+    height: 56px;
+    background-color: #fff;
+    flex-shrink: 0;
+    z-index: 1030;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
 .main-content.no-page-scroll {
     height: calc(100vh - 56px);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
+
 .dashboard-flex {
     flex: 1;
     min-height: 0;
@@ -60,87 +57,10 @@ body {
     flex-direction: column;
     gap: 12px;
 }
-.row-stat {
-    flex-shrink: 0;
-}
-.row-table-flex {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-}
-.row-table-flex > [class*="col-"] {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
-.card-table-flex {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    flex: 1;
-}
-.card-table-flex .table-responsive {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-}
-.card-sales.compact {
-    padding: 14px 20px;
-}
-.card-sales.compact .text-sales {
-    font-size: 18px;
-}
-.card-sales.compact .text-sale {
-    font-size: 20px;
-    margin-top: 4px;
-}
-.card-table-flex .table-responsive::-webkit-scrollbar {
-    width: 6px;
-}
-.card-table-flex .table-responsive::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-}
-.main-container {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    transition:
-        margin-left 0.3s ease-in-out,
-        width 0.3s ease-in-out;
-}
-.navbar-top {
-    height: 56px;
-    background-color: #fff;
-    flex-shrink: 0;
-    z-index: 1030;
-}
-.main-content {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-}
 
-.logout {
-    margin-top: auto;
-    padding: 0 12px;
-    text-align: center;
-}
-.logout .nav-link:hover {
-    background-color: rgba(220, 53, 69, 0.2);
-    color: #dc3545 !important;
-}
-
-@media (max-width: 991.98px) {
-    .main-container {
-        margin-left: 0 !important;
-        width: 100% !important;
-    }
-}
-
-/* ==== CSS Sidebar (sebelumnya di navbar.blade.php) ==== */
+/* ==========================================================================
+   Sidebar Styling
+   ========================================================================== */
 .sidebar {
     width: 250px;
     background-color: #212529;
@@ -155,6 +75,7 @@ body {
     flex-direction: column;
     transition: transform 0.3s ease-in-out;
 }
+
 .sidebar .nav-link {
     color: rgba(255, 255, 255, 0.75);
     padding: 10px 16px;
@@ -165,24 +86,148 @@ body {
     transition: 0.2s;
     font-weight: 500;
 }
+
 .sidebar .nav-link:hover {
     color: #ffffff;
     background-color: rgba(13, 110, 253, 0.2);
 }
+
 .sidebar .nav-link.active {
     color: #ffffff;
     background-color: #0d6efd;
 }
+
 .logout {
     margin-top: auto;
     padding: 0 12px;
     text-align: center;
 }
+
 .logout .nav-link:hover {
     background-color: rgba(220, 53, 69, 0.2);
     color: #dc3545 !important;
 }
 
+/* ==========================================================================
+   Card Sales & Summary Components
+   ========================================================================== */
+.card-sales {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    border: none;
+}
+
+.sales {
+    border-left: 5px solid #0d6efd;
+}
+
+.text-sales {
+    font-size: 22px;
+    text-align: start;
+    font-weight: bold;
+}
+
+.text-sale {
+    margin-top: 8px;
+    color: #212529;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.card-payment-tunai {
+    border-left: 5px solid #0d6efd;
+}
+
+.card-payment-nontunai {
+    border-left: 5px solid #0d6efd;
+}
+
+/* Ringkasan Ukuran Ringkas (Compact Cards) */
+.card-sales.compact {
+    padding: 12px 16px;
+}
+
+.card-sales.compact .text-sales {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-sales.compact .text-sale {
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+/* ==========================================================================
+   Table Container Styling (Desktop: Full Height Mengisi Layar Bawah)
+   ========================================================================== */
+.row-stat {
+    flex-shrink: 0;
+}
+
+.row-table-flex {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+}
+
+.row-table-flex > [class*="col-"] {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.card-table-flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    flex: 1;
+}
+
+.card-table-flex .table-responsive {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+/* Mengunci baris Total (tfoot) di posisi paling bawah kontainer tabel */
+.card-table-flex table tfoot {
+    position: sticky;
+    bottom: 0;
+    background-color: #f8f9fa;
+    z-index: 2;
+}
+
+.table-scroll-limited {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.fs-7 {
+    font-size: 0.85rem;
+}
+
+/* Custom Scrollbar Styling */
+.card-table-flex .table-responsive::-webkit-scrollbar,
+.table-scroll-limited::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.card-table-flex .table-responsive::-webkit-scrollbar-thumb,
+.table-scroll-limited::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+/* ==========================================================================
+   Popup & Alert Components
+   ========================================================================== */
 .popup-alert-overlay {
     position: fixed;
     inset: 0;
@@ -209,27 +254,6 @@ body {
     min-width: 260px;
     max-width: 90vw;
     animation: popupZoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Menjaga area flex tidak melimpah melebih batas viewport */
-.row-table-flex {
-    flex: 1;
-    min-height: 0;
-    overflow: hidden; /* Mengunci overflow ke bawah */
-}
-
-/* Memastikan wrapper scroll pada tabel berfungsi internal */
-.card-table-flex {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 0;
-}
-
-.card-table-flex .table-responsive {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto; /* Scrollbar hanya muncul di dalam tabel jika data panjang */
 }
 
 @keyframes popupZoomIn {
@@ -263,11 +287,68 @@ body {
     font-size: 1rem;
     color: #212529;
 }
+
+/* ==========================================================================
+   Responsive Breakpoints & Media Queries
+   ========================================================================== */
+/* Tablet & Mobile: Otomatis Rapat Mengikuti Jumlah Konten (Fit Content) */
+@media (max-width: 1199.98px) {
+    .main-content.no-page-scroll {
+        height: auto;
+        overflow-y: auto;
+    }
+    
+    .dashboard-flex {
+        height: auto;
+    }
+
+    .row-table-flex {
+        overflow: visible;
+        flex-direction: column;
+    }
+
+    .card-table-flex {
+        height: auto !important;
+        min-height: unset !important;
+        flex: none !important;
+    }
+
+    .card-table-flex .table-responsive {
+        flex: none !important;
+    }
+}
+
+/* Sidebar Toggle Breakpoint */
 @media (max-width: 991.98px) {
+    .main-container {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
     .sidebar {
         transform: translateX(-100%);
     }
+
     .sidebar.show {
         transform: translateX(0);
+    }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 575.98px) {
+    .main-content {
+        padding: 12px;
+    }
+
+    .card-sales.compact {
+        padding: 10px 12px;
+    }
+
+    .card-sales.compact .text-sale {
+        font-size: 14px;
+    }
+
+    .w-sm-auto {
+        width: auto !important;
     }
 }

@@ -27,10 +27,6 @@ Route::middleware('auth')->group(function() {
     ->name('laporan.bulanan')
     ->middleware('auth');
 
-    Route::get('/perulangan', [PerulanganController::class, 'index'])->name('perulangan');
-    Route::get('/percabangan', [PercabanganController::class, 'index'])->name('percabangan');
-    Route::get('/variabel', [variabelController::class, 'index'])->name('variabel');
-
     // Khusus admin — users
     Route::middleware('role:admin')->name('admin.')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users');

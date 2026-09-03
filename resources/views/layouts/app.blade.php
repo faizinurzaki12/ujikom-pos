@@ -16,7 +16,7 @@
         <!-- sidebar -->
         <div class="sidebar" id="sidebarMenu">
             <div class="d-flex justify-content-between align-items-center px-3 mb-4">
-                <h4 class="mb-0 text-start fs-1 fw-bold">POS</h4>
+                <h4 class="mb-0 text-center" style="color: #0d6efd;">POS Toko Handphone Danzz</h4>
                 <button class="btn btn-dark d-lg-none text-white" id="sidebarClose">
                     <i class="bi bi-x-lg"></i>
                 </button>
@@ -30,11 +30,9 @@
                     <a class="nav-link {{ Request::is('users*') ? 'active' : '' }}" href="{{ url('users') }}">Users</a>
                 </li>
                 @endcan
-                @can('viewAny', App\Models\User::class)
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('jenis*') ? 'active' : '' }}" href="{{ route('jenis.index') }}">Jenis</a>
                 </li>
-                @endcan
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('produk*') ? 'active' : '' }}" href="{{ route('produk.index') }}">Produk</a>
                 </li>
