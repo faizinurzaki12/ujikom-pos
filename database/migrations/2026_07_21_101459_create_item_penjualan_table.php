@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('item_penjualan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('penjualan_id')->constrained('penjualan','id');
-            $table->foreignId('produk_id')->constrained('produk','id')->onDelete('cascade');
+            $table->foreignId('penjualan_id')->constrained('penjualan','id')->onDelete('cascade');
+            
+            // Hapus onDelete('cascade') dan ubah menjadi nullable() + nullOnDelete()
+            $table->foreignId('produk_id')->nullable()->constrained('produk','id')->nullOnDelete();
+            
             $table->integer('kuantitas');
             $table->integer('harga_satuan');
             $table->integer('subtotal');

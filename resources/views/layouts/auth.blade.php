@@ -7,6 +7,7 @@
     <!-- Bootstrap 5.3 CSS & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- @vite(['resources/css/app.css' , 'resources/js/app.js']) -->
     <style>
         body {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);

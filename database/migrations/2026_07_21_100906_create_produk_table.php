@@ -22,6 +22,9 @@ return new class extends Migration
             $table->integer('stok');
             $table->index('nama');
             $table->timestamps();
+            
+            // Tambahkan ini agar mendukung soft delete
+            $table->softDeletes();
         });
     }
 

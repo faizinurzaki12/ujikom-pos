@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes; // Import SoftDeletes
+
 class Produk extends Model
 {
-    // ini untuk di daftarkan factory kita di models 
-    use HasFactory;
+    use HasFactory, SoftDeletes; // Pasang SoftDeletes di sini
+
     protected $table = 'produk';
 
     protected $fillable = [
@@ -25,13 +27,12 @@ class Produk extends Model
         return $this->belongsTo(Jenis::class, 'jenis_id');
     }
     
-    //  1 produk memiliki banyak item penjualannya
+    // 1 produk memiliki banyak item penjualannya
     public function itemPenjualan() {
         return $this->hasMany(ItemPenjualan::class,'produk_id');
     }
 
     // 1 link user memiliki banyak produk 
-    // user 
     public function user() {
         return $this->belongsTo(User::class,'user_id');
     }
