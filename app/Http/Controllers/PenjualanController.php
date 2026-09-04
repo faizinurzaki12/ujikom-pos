@@ -100,9 +100,10 @@ class PenjualanController extends Controller
      */
     public function edit(Penjualan $penjualan)
     {
-        $sale = $penjualan;
-        abort_if($sale->status === 'COMPLETED', 403);
+        // Memastikan izin via policy
+        $this->authorize('update', $penjualan);
 
+        $sale = $penjualan;
         $sale->load('itemPenjualan');
         $products = Produk::orderBy('nama')->get();
         $mode = 'edit';
