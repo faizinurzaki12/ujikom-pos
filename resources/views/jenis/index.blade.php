@@ -37,7 +37,7 @@
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
             
-            {{-- FORM SEARCH (Mengikuti lebar tabel) --}}
+            {{-- FORM SEARCH --}}
             <form action="{{ route('jenis.index') }}" method="GET" class="mb-3">
                 <div class="input-group shadow-sm">
                     <input 
@@ -73,7 +73,7 @@
                             @forelse($jenis as $index => $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td class="fw-medium">{{ $item->nama_jenis ?? $item->nama }}</td>
+                                    <td class="fw-medium">{{ $item->nama_jenis }}</td>
                                     
                                     @can('update', $item)
                                     <td class="text-center">
@@ -89,14 +89,14 @@
                                             </button>
 
                                             @can('delete', $item)
-                                            <form action="{{ route('jenis.destroy', $item) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('jenis.destroy', $item->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button
                                                     title="Hapus"
                                                     type="submit"
                                                     class="btn btn-sm btn-outline-danger text-nowrap"
-                                                    onclick="return confirm('Yakin hapus jenis &quot;{{ $item->nama_jenis ?? $item->nama }}&quot;?')"
+                                                    onclick="return confirm('Yakin hapus jenis &quot;{{ $item->nama_jenis }}&quot;?')"
                                                 >
                                                     <i class="bi bi-trash"></i> Hapus
                                                 </button>
@@ -108,7 +108,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="{{ auth()->user()->role?->name === 'admin' ? 3 : 2 }}" class="text-center text-muted py-4">
+                                    <td colspan="3" class="text-center text-muted py-4">
                                         Tidak ada data jenis produk yang ditemukan.
                                     </td>
                                 </tr>
@@ -127,30 +127,33 @@
     <div class="modal fade" id="editJenisModal-{{ $item->id }}" tabindex="-1" aria-labelledby="editJenisModalLabel-{{ $item->id }}" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="editJenisModalLabel-{{ $item->id }}">Edit Jenis Produk</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('jenis.update', $item) }}" method="POST">
+                <form action="{{ route('jenis.update', $item->id) }}" method="POST">
                     @csrf
                     @method('PUT')
+                    
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold" id="editJenisModalLabel-{{ $item->id }}">Edit Jenis Produk</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
                     <div class="modal-body text-start">
                         <div class="mb-3">
-                            <label for="nama_{{ $item->id }}" class="form-label fw-medium">Nama Jenis Produk</label>
+                            <label for="nama_jenis_{{ $item->id }}" class="form-label fw-medium">Nama Jenis Produk</label>
                             <input
                                 type="text"
-                                name="nama"
-                                id="nama_{{ $item->id }}"
-                                class="form-control @error('nama') is-invalid @enderror"
-                                value="{{ old('nama', $item->nama_jenis ?? $item->nama) }}"
+                                name="nama_jenis"
+                                id="nama_jenis_{{ $item->id }}"
+                                class="form-control @error('nama_jenis') is-invalid @enderror"
+                                value="{{ old('nama_jenis', $item->nama_jenis) }}"
                                 placeholder="Contoh: Unit Handphone, Paket data & pulsa,dll"
                                 required
                             >
-                            @error('nama')
+                            @error('nama_jenis')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
+                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Perbarui</button>
@@ -167,29 +170,31 @@
 <div class="modal fade" id="createJenisModal" tabindex="-1" aria-labelledby="createJenisModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold" id="createJenisModalLabel">Tambah Jenis Produk</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
             <form action="{{ route('jenis.store') }}" method="POST">
                 @csrf
-                <div class="modal-body">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="createJenisModalLabel">Tambah Jenis Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body text-start">
                     <div class="mb-3">
                         <label for="nama_create" class="form-label fw-medium">Nama Jenis Produk</label>
                         <input
                             type="text"
-                            name="nama"
+                            name="nama_jenis"
                             id="nama_create"
-                            class="form-control @error('nama') is-invalid @enderror"
-                            value="{{ old('nama') }}"
+                            class="form-control @error('nama_jenis') is-invalid @enderror"
+                            value="{{ old('nama_jenis') }}"
                             placeholder="Contoh: Unit Handphone, Paket data & pulsa,dll"
                             required
                         >
-                        @error('nama')
+                        @error('nama_jenis')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
+                
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>

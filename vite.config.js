@@ -11,3 +11,5 @@ export default defineConfig({
         // tailwindcss(),
     ],
 });
+
+     // @vite(['resources/css/app.css' , 'resources/js/app.js']) 

@@ -4,14 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Jenis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JenisController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // $this->authorize('viewAny', Jenis::class);
 
-        $jenis = Jenis::all();
+        $query = Jenis::query();
+
+        if ($request->filled('search')) {
+            $query->where('nama_jenis', 'like', '%' . $request->search . '%');
+        }
+
+        $jenis = $query->latest()->get();
+
         return view('jenis.index', compact('jenis'));
     }
 
@@ -27,39 +35,44 @@ class JenisController extends Controller
         $this->authorize('create', Jenis::class);
 
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama_jenis' => 'required|string|max:255',
         ]);
 
-        Jenis::create($request->only('nama'));
+        Jenis::create([
+            'user_id'    => Auth::id(),
+            'nama_jenis' => $request->nama_jenis,
+        ]);
 
         return redirect()->route('jenis.index')->with('success', 'Jenis berhasil ditambahkan');
     }
 
-    public function edit(Jenis $jeni)
+    public function edit(Jenis $jenis)
     {
-        $this->authorize('update', $jeni);
+        $this->authorize('update', $jenis);
 
-        return view('jenis.edit', ['jenis' => $jeni]);
+        return view('jenis.edit', compact('jenis'));
     }
 
-    public function update(Request $request, Jenis $jeni)
+    public function update(Request $request, Jenis $jenis)
     {
-        $this->authorize('update', $jeni);
+        $this->authorize('update', $jenis);
 
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama_jenis' => 'required|string|max:255',
         ]);
 
-        $jeni->update($request->only('nama'));
+        $jenis->update([
+            'nama_jenis' => $request->nama_jenis,
+        ]);
 
         return redirect()->route('jenis.index')->with('success', 'Jenis berhasil diperbarui');
     }
 
-    public function destroy(Jenis $jeni)
+    public function destroy(Jenis $jenis)
     {
-        $this->authorize('delete', $jeni);
+        $this->authorize('delete', $jenis);
 
-        $jeni->delete();
+        $jenis->delete();
 
         return redirect()->route('jenis.index')->with('success', 'Jenis berhasil dihapus');
     }
