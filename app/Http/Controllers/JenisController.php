@@ -10,7 +10,6 @@ class JenisController extends Controller
 {
     public function index(Request $request)
     {
-        // $this->authorize('viewAny', Jenis::class);
 
         $query = Jenis::query();
 
