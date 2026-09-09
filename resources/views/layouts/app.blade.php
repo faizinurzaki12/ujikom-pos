@@ -16,8 +16,8 @@
         <!-- sidebar -->
         <div class="sidebar" id="sidebarMenu">
             <div class="d-flex justify-content-between align-items-center px-3 mb-4">
-                <h4 class="mb-0 text-center" style="color: #0d6efd;">POS Toko Handphone Danzz</h4>
-                <button class="btn btn-dark d-lg-none text-white" id="sidebarClose">
+                <h4 class="mb-0 text-center" style="color: #0d6efd;">Toko Handphone Danzz</h4>
+                <button class="btn btn-dark d-lg-none text-white" id="sidebarClose">    
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>

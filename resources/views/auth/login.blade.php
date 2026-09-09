@@ -11,7 +11,7 @@
         <i class="bi bi-phone-vibrate fs-2"></i>
       </div>
 
-      <h4 class="fw-bold mb-1 text-dark">POS Handphone Danzz</h4>
+      <h4 class="fw-bold mb-1 text-dark">Toko Handphone Danzz</h4>
       <p class="text-muted small mb-4">Sistem Kasir & Operasional Konter HP</p>
 
       <div class="card-body p-0">
