@@ -1,0 +1,2 @@
+composer require intervention/image
+composer require intervention/image-laravel

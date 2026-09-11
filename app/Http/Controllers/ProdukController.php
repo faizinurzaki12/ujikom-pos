@@ -9,6 +9,7 @@ use App\Models\Jenis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProdukController extends Controller
 {
@@ -60,12 +61,60 @@ class ProdukController extends Controller
         $data['stok'] = $dataReq['stock'] ?? true;
 
         if ($request->hasFile('foto')) {
-            $data['foto'] = $request->file('foto')->store('products', 'public');
+            $file = $request->file('foto');
+
+            // Buat nama unik file
+            $filename = 'products/' . Str::random(20) . '.jpg';
+
+            // Baca gambar asli
+            $source = imagecreatefromstring(file_get_contents($file->getRealPath()));
+
+            // Ambil ukuran asli
+            $width  = imagesx($source);
+            $height = imagesy($source);
+
+            // Hitung ukuran baru (max lebar 800px, jaga aspect ratio)
+            $maxWidth = 800;
+            if ($width > $maxWidth) {
+                $newWidth  = $maxWidth;
+                $newHeight = intval($height * ($maxWidth / $width));
+            } else {
+                $newWidth  = $width;
+                $newHeight = $height;
+            }
+
+            // Buat canvas baru
+            $resized = imagecreatetruecolor($newWidth, $newHeight);
+
+            // Resize dengan kualitas bagus
+            imagecopyresampled(
+                $resized, $source,
+                0, 0, 0, 0,
+                $newWidth, $newHeight,
+                $width, $height
+            );
+
+            // Compress ke JPG (quality 60 = keseimbangan bagus & ukuran kecil)
+            ob_start();
+            imagejpeg($resized, null, 60);
+            $compressedContent = ob_get_clean();
+
+            // Bersihkan memory
+            imagedestroy($source);
+            imagedestroy($resized);
+
+            // Simpan ke storage
+            Storage::disk('public')->put($filename, $compressedContent);
+
+            $data['foto'] = $filename;
+
+            // Flash ukuran untuk ditampilkan di view
+            session()->flash('foto_original_size', $file->getSize());
+            session()->flash('foto_compressed_size', strlen($compressedContent));
         }
+        $produk = Produk::create($data);
 
-        Produk::create($data);
-
-        return redirect()->route('produk.index')->with('success', 'Product created successfully.');
+        return redirect()->route('produk.edit', $produk->id)->with('success', 'Product created successfully.');
 
     }
 
@@ -94,32 +143,71 @@ class ProdukController extends Controller
      */
     public function update(UpdateRequest $request, Produk $produk)
     {
-        $this->authorize('viewAny', Produk::class);
+        $this->authorize('update', $produk);
+
         $dataReq = $request->validated();
 
         $data = [
-        'user_id'    => Auth::id(),
-        'nama'       => $dataReq['name'],
-        'jenis_id'   => $dataReq['jenis_id'],
-        'harga_beli' => $dataReq['purchase_price'],
-        'harga_jual' => $dataReq['selling_price'],
-        'stok'       => $dataReq['stock'],
+            'user_id'    => Auth::id(),
+            'jenis_id'   => $dataReq['nama_jenis'],
+            'nama'       => $dataReq['name'],
+            'harga_beli' => $dataReq['purchase_price'],
+            'harga_jual' => $dataReq['selling_price'],
+            'stok'       => $dataReq['stock'] ?? 0,
         ];
-        // jika upload foto baru
-        if($request->hasFile('foto')) {
-            if(
-                $produk->foto && 
-                Storage::disk('public')->exists($produk->foto)
-            ) {
+
+        if ($request->hasFile('foto')) {
+
+            // 1. Hapus foto lama jika ada
+            if ($produk->foto && Storage::disk('public')->exists($produk->foto)) {
                 Storage::disk('public')->delete($produk->foto);
             }
-            // simpan foto baru buat di kenang
-            $data['foto'] = $request->file('foto')->store('products', 'public');
-        }
 
+            // 2. Proses foto baru
+            $file = $request->file('foto');
+            $filename = 'products/' . Str::random(20) . '.jpg';
+
+            $source = imagecreatefromstring(file_get_contents($file->getRealPath()));
+
+            $width  = imagesx($source);
+            $height = imagesy($source);
+
+            $maxWidth = 800;
+            if ($width > $maxWidth) {
+                $newWidth  = $maxWidth;
+                $newHeight = intval($height * ($maxWidth / $width));
+            } else {
+                $newWidth  = $width;
+                $newHeight = $height;
+            }
+
+            $resized = imagecreatetruecolor($newWidth, $newHeight);
+
+            imagecopyresampled(
+                $resized, $source,
+                0, 0, 0, 0,
+                $newWidth, $newHeight,
+                $width, $height
+            );
+
+            ob_start();
+            imagejpeg($resized, null, 60);
+            $compressedContent = ob_get_clean();
+
+            imagedestroy($source);
+            imagedestroy($resized);
+
+            Storage::disk('public')->put($filename, $compressedContent);
+
+            $data['foto'] = $filename;
+
+            session()->flash('foto_original_size', $file->getSize());
+            session()->flash('foto_compressed_size', strlen($compressedContent));
+        }
         $produk->update($data);
 
-        return redirect()->route('produk.edit', $produk->id)->with('success', 'Products updated successfully.');
+        return redirect()->route('produk.edit', $produk->id)
+            ->with('success', 'Produk berhasil diperbarui.');
     }
 
     /**

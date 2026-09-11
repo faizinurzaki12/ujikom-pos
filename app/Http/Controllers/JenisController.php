@@ -71,6 +71,12 @@ class JenisController extends Controller
     {
         $this->authorize('delete', $jenis);
 
+        // Cek apakah jenis ini memiliki relasi data di tabel produk
+        if ($jenis->produk()->exists()) {
+            return redirect()->route('jenis.index')
+                ->with('error', 'Gagal menghapus! Jenis ini masih digunakan oleh data produk.');
+        }
+
         $jenis->delete();
 
         return redirect()->route('jenis.index')->with('success', 'Jenis berhasil dihapus');
