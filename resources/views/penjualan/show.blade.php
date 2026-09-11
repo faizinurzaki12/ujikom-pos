@@ -58,6 +58,16 @@
                     <td class="fw-semibold px-4 py-3">Total Pembayaran</td>
                     <td class="px-4 py-3 fw-bold">Rp {{ number_format($penjualan->total_pembayaran, 0, ',', '.') }}</td>
                   </tr>
+                  @if($penjualan->metode_pembayaran === 'CASH')
+                  <tr>
+                    <td class="fw-semibold px-4 py-3">Uang Dibayar</td>
+                    <td class="px-4 py-3">Rp {{ number_format($penjualan->uang_dibayar, 0, ',', '.') }}</td>
+                  </tr>
+                  <tr class="bg-light bg-opacity-50">
+                    <td class="fw-semibold px-4 py-3">Kembalian</td>
+                    <td class="px-4 py-3">Rp {{ number_format($penjualan->kembalian, 0, ',', '.') }}</td>
+                  </tr>
+                  @endif
                 </tbody>
               </table>
             </div>

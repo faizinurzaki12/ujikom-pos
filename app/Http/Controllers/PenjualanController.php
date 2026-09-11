@@ -117,30 +117,56 @@ class PenjualanController extends Controller
     public function update(Request $request, Penjualan $penjualan)
     {
         $request->validate([
-            'payment_method' => 'required|in:CASH,QRIS'
+            'payment_method' => 'required|in:CASH,QRIS,BAYAR_NANTI',
+            'uang_dibayar' => 'nullable',
+            'kembalian' => 'nullable',
         ]);
 
-        if ($penjualan->status !== 'OPEN') {
-            return back()->with('errors', 'Transaksi sudah diproses');
+        if ($penjualan->status == 'COMPLETED') {
+            return back()->with('error', 'Transaksi sudah diproses');
         }
 
-        if ($penjualan->itemPenjualan()->count() === 0) {
-            return back()->with('errors', 'Keranjang masih kosong');
+        $this->authorize('update', $penjualan);
+
+        if ($penjualan->itemPenjualan()->count() == 0) {
+            return back()->with('error', 'Keranjang masih kosong');
         }
 
-        DB::transaction(function() use ($penjualan, $request) {
-            // hitung ulang totall (anti manipulasi)
-            $total = $penjualan->itemPenjualan()->sum('subtotal');
+        $total = $penjualan->itemPenjualan()->sum('subtotal');
+        
+        $uangDibayar = null;
+        $kembalian = null;
+
+        // Validasi khusus jika metode pembayaran CASH
+        if ($request->payment_method === 'CASH') {
+            // Memastikan data diambil secara aman (pakai float/numeric, fallback ke 0 jika kosong)
+            $uangDibayar = floatval($request->input('uang_dibayar', 0));
+            $kembalian = floatval($request->input('kembalian', 0));
+
+            if ($uangDibayar < $total) {
+                return back()->withErrors(['uang_dibayar' => 'Uang tunai dari pelanggan kurang dari total pembayaran!'])->withInput();
+            }
+        }
+
+        $newStatus = ($request->payment_method === 'BAYAR_NANTI') ? 'OPEN' : 'COMPLETED';
+
+        DB::transaction(function () use ($penjualan, $request, $total, $newStatus, $uangDibayar, $kembalian) {
             $penjualan->update([
                 'metode_pembayaran' => $request->payment_method,
                 'total_pembayaran' => $total,
-                'status' => 'COMPLETED'
+                'uang_dibayar' => $uangDibayar,
+                'kembalian' => $kembalian,
+                'status' => $newStatus
             ]);
         });
 
+        $message = ($newStatus === 'OPEN') 
+            ? 'Transaksi berhasil disimpan (Bayar Nanti)' 
+            : 'Transaksi berhasil diselesaikan';
+
         return redirect()
             ->route('penjualan.index')
-            ->with('success', 'Transaksi Berhasil Diselesaikan');
+            ->with('success', $message);
     }
 
     /**

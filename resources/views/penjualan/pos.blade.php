@@ -79,7 +79,8 @@
                 </div>
             </div>
         </div>
-        
+
+        {{-- ================== KERANJANG ================== --}}
         <div class="col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
@@ -140,15 +141,39 @@
                         <strong class="fs-5 text-dark">Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}</strong>
                     </div>
 
+                    {{-- ================== FORM CHECKOUT ================== --}}
                     <form method="POST" action="{{ route('penjualan.update', $sale->id) }}"
-                        onsubmit="return confirm('Yakin ingin checkout?');">
+                        onsubmit="return confirm('Yakin ingin checkout?');" id="checkoutForm"
+                        data-total="{{ $sale->total_pembayaran }}">
                         @csrf
                         @method('PUT')
-                        <select name="payment_method" class="form-select mb-3">
+
+                        <select name="payment_method" id="paymentMethod" class="form-select mb-3 @error('payment_method') is-invalid @enderror">
                             <option value="">Pilih Pembayaran</option>
-                            <option value="CASH">Cash</option>
-                            <option value="QRIS">QRIS</option>
+                            <option value="CASH" {{ old('payment_method') === 'CASH' ? 'selected' : '' }}>Cash</option>
+                            <option value="QRIS" {{ old('payment_method') === 'QRIS' ? 'selected' : '' }}>QRIS</option>
+                            <option value="BAYAR_NANTI" {{ old('payment_method') === 'BAYAR_NANTI' ? 'selected' : '' }}>Bayar Nanti</option>
                         </select>
+                        @error('payment_method')
+                            <div class="text-danger small mb-2">{{ $message }}</div>
+                        @enderror
+
+                        <div id="cashInputWrapper" class="mb-3 d-none">
+                            <label class="form-label small fw-semibold">Uang Dibayar</label>
+                            <input type="text" inputmode="numeric" name="uang_dibayar" id="uangDibayar"
+                            class="form-control mb-2 @error('uang_dibayar') is-invalid @enderror"
+                            placeholder="Masukkan jumlah uang tunai"
+                            value="{{ old('uang_dibayar') }}"
+                            autocomplete="off">
+                            @error('uang_dibayar')
+                                <div class="text-danger small mb-2">{{ $message }}</div>
+                            @enderror
+
+                            <label class="form-label small fw-semibold">Kembalian</label>
+                            <input type="text" id="kembalianDisplay" class="form-control" readonly value="Rp 0">
+                            <div id="kurangInfo" class="text-danger small mt-1 d-none"></div>
+                            <input type="hidden" name="kembalian" id="kembalianInput" value="0">
+                        </div>
 
                         <button type="submit" class="btn btn-success w-100 py-2 fw-semibold {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}">
                             Checkout
@@ -173,5 +198,7 @@
 
     </div>
 </div>
+
+<script src="{{ asset('assets/js/penjualan-checkout.js') }}"></script>
 
 @endsection
