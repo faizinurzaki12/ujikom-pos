@@ -1,29 +1,32 @@
 @extends('layouts.app')
 
-@section('title', 'Rekap Bulanan')
+@section('title', 'Rekap Bulanan & Mingguan')
 
 @section('content')
 <div class="dashboard-flex">
-    <!-- Header & Filter Bulan/Tahun -->
-    <div class="row-stat">
-        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 gap-2">
+    
+    <!-- Header & Filter -->
+    <div class="row-stat mb-2">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
             <h5 class="fw-bold mb-0 text-truncate">
-                Rekap Bulanan
+                Rekap Bulanan &amp; Mingguan
                 <small class="text-muted fs-6 d-block d-sm-inline">({{ $namaBulanTahun }})</small>
             </h5>
 
-            <form method="GET" action="{{ route('laporan.bulanan') }}" class="d-flex gap-2 flex-wrap flex-sm-nowrap">
+            <form action="{{ route('laporan.bulanan') }}" method="GET" class="d-flex gap-2 flex-wrap flex-sm-nowrap">
                 <select name="bulan" class="form-select form-select-sm">
                     @foreach(range(1, 12) as $m)
                         <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
-                            {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                            {{ \Illuminate\Support\Carbon::create()->month($m)->translatedFormat('F') }}
                         </option>
                     @endforeach
                 </select>
 
                 <select name="tahun" class="form-select form-select-sm">
-                    @foreach($daftarTahun as $t)
-                        <option value="{{ $t }}" {{ $tahun == $t ? 'selected' : '' }}>{{ $t }}</option>
+                    @foreach($daftarTahun as $thn)
+                        <option value="{{ $thn }}" {{ $tahun == $thn ? 'selected' : '' }}>
+                            {{ $thn }}
+                        </option>
                     @endforeach
                 </select>
 
@@ -32,137 +35,203 @@
                 </button>
             </form>
         </div>
+    </div>
 
-        <!-- Ringkasan Total Bulanan -->
-        <div class="row g-2 mb-2">
-            <div class="col-12">
-                <h6 class="fw-bold text-primary mb-1 fs-6">Ringkasan Bulan Ini</h6>
-            </div>
+    <!-- Ringkasan Kategori -->
+    <div class="row-stat mb-2">
+        <div class="row g-2">
             <div class="col-6 col-md-3">
-                <div class="card-sales sales compact shadow-sm">
+                <div class="card-sales sales compact shadow-sm bg-white rounded-3 border">
                     <div class="text-sales">Total Penjualan</div>
-                    <div class="text-sale">Rp {{ number_format($ringkasan['total_penjualan'], 0, ',', '.') }}</div>
+                    <div class="text-sale">Rp {{ number_format($ringkasan['total_penjualan'] ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="card-sales sales compact shadow-sm">
+                <div class="card-sales sales compact shadow-sm bg-white rounded-3 border">
                     <div class="text-sales">Jumlah Transaksi</div>
-                    <div class="text-sale">{{ $ringkasan['total_transaksi'] }} Transaksi</div>
+                    <div class="text-sale">{{ $ringkasan['total_transaksi'] ?? 0 }} Transaksi</div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="card-sales card-payment-tunai compact shadow-sm">
+                <div class="card-sales card-payment-tunai compact shadow-sm bg-white rounded-3 border">
                     <div class="text-sales">Total Tunai</div>
-                    <div class="text-sale">Rp {{ number_format($ringkasan['total_cash'], 0, ',', '.') }}</div>
+                    <div class="text-sale">Rp {{ number_format($ringkasan['total_cash'] ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="card-sales card-payment-nontunai compact shadow-sm">
+                <div class="card-sales card-payment-nontunai compact shadow-sm bg-white rounded-3 border">
                     <div class="text-sales">Total Non-Tunai</div>
-                    <div class="text-sale">Rp {{ number_format($ringkasan['total_non_tunai'], 0, ',', '.') }}</div>
+                    <div class="text-sale">Rp {{ number_format($ringkasan['total_non_tunai'] ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Area Tabel Responsive Grid -->
-    <div class="row row-table-flex g-3">
-        <!-- Tabel Rekap Harian dalam Bulan -->
-        <div class="col-xl-7 col-12 d-flex flex-column">
-            <div class="card card-table-flex border-0 shadow-sm p-3 bg-white rounded-3">
-                <h6 class="fw-bold text-dark mb-2 fs-6">Rekap Harian</h6>
-                
-                <!-- Container Utama Tabel Harian -->
-                <div class="rekap-container">
-                    <div class="table-responsive">
-                        <table class="table table-sm table-hover align-middle mb-0 text-nowrap">
-                            <thead class="table-dark sticky-top">
-                                <tr>
-                                    <th scope="col">Tanggal</th>
-                                    <th scope="col" class="text-center">Jml Transaksi</th>
-                                    <th scope="col" class="text-center">Kuantitas</th>
-                                    <th scope="col" class="text-end">Total Penjualan</th>
-                                    <th scope="col" class="text-end">Tunai</th>
-                                    <th scope="col" class="text-end">Non-Tunai</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($rekapHarian as $hari)
-                                    <tr>
-                                        <td class="fw-medium">
-                                            {{ \Carbon\Carbon::parse($hari->tanggal)->translatedFormat('d F Y (l)') }}
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge bg-primary-subtle text-primary px-2 py-1">{{ $hari->total_transaksi }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge bg-warning-subtle text-warning fw-bold px-2 py-1">{{ $hari->total_kuantitas ?? 0 }} Pcs</span>
-                                        </td>
-                                        <td class="text-end">Rp {{ number_format($hari->total_penjualan, 0, ',', '.') }}</td>
-                                        <td class="text-end">Rp {{ number_format($hari->total_cash, 0, ',', '.') }}</td>
-                                        <td class="text-end">Rp {{ number_format($hari->total_non_tunai, 0, ',', '.') }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-muted text-center py-3">
-                                            Belum ada transaksi pada bulan ini.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Row Total Dikunci di Dasar Kartu -->
-                    @if($rekapHarian->isNotEmpty())
-                    <div class="total-bottom-bar border-top pt-2 mt-auto">
-                        <div class="table-responsive">
-                            <table class="table table-sm mb-0 text-nowrap">
-                                <tfoot>
-                                    <tr class="fw-bold">
-                                        <td>Total</td>
-                                        <td class="text-center">{{ $ringkasan['total_transaksi'] }}</td>
-                                        <td class="text-center">{{ $rekapHarian->sum('total_kuantitas') }} Pcs</td>
-                                        <td class="text-end">Rp {{ number_format($ringkasan['total_penjualan'], 0, ',', '.') }}</td>
-                                        <td class="text-end">Rp {{ number_format($ringkasan['total_cash'], 0, ',', '.') }}</td>
-                                        <td class="text-end">Rp {{ number_format($ringkasan['total_non_tunai'], 0, ',', '.') }}</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                    @endif
+    <!-- Tabel Rekap Harian & Rekap Mingguan -->
+    <div class="row g-2 row-table-flex mb-2" style="flex: 3;">
+        
+        <!-- Rekap Harian -->
+        <div class="col-lg-6 col-12">
+            <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="fw-bold text-dark mb-0 fs-7">Rekap Harian</h6>
                 </div>
-            </div>
-        </div>
-
-        <!-- Tabel Produk Terlaris Bulanan -->
-        <div class="col-xl-5 col-12 d-flex flex-column">
-            <div class="card card-table-flex border-0 shadow-sm p-3 bg-white rounded-3 h-100">
-                <h6 class="fw-bold text-dark mb-2 fs-6">Produk Terlaris Bulan Ini</h6>
                 <div class="table-responsive">
-                    <table class="table table-sm table-hover align-middle mb-0 text-nowrap">
-                        <thead class="table-light sticky-top">
-                            <tr class="table-dark">
-                                <th scope="col">Nama Produk</th>
-                                <th scope="col">Stok Tersedia</th>
-                                <th scope="col" class="text-center">Unit Terjual</th>
+                    <table class="table table-sm table-hover align-middle mb-0 text-nowrap fs-7">
+                        <thead class="table-dark sticky-top">
+                            <tr>
+                                <th>Tanggal</th>
+                                <th class="text-center">Jml Transaksi</th>
+                                <th class="text-center">Kuantitas</th>
+                                <th class="text-end">Total Penjualan</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($produkTerlaris as $produk)
+                            @forelse($rekapHarian as $harian)
                                 <tr>
-                                    <td class="fw-medium">{{ $produk->nama }}</td>
-                                    <td>{{ $produk->stok }} Pcs</td>
+                                    <td class="fw-medium">
+                                        {{ \Illuminate\Support\Carbon::parse($harian->tanggal)->translatedFormat('d F Y (l)') }}
+                                    </td>
                                     <td class="text-center">
-                                        <span class="badge bg-success-subtle text-success fw-bold px-3 py-1">{{ $produk->total_terjual }} Terjual</span>
+                                        <span class="badge bg-primary-subtle text-primary px-2 py-1">
+                                            {{ $harian->total_transaksi }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-warning-subtle text-warning fw-bold px-2 py-1">
+                                            {{ $harian->total_kuantitas ?? 0 }} Pcs
+                                        </span>
+                                    </td>
+                                    <td class="text-end fw-semibold">
+                                        Rp {{ number_format($harian->total_penjualan, 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-muted text-center py-3">
-                                        Belum ada data penjualan pada bulan ini.
+                                    <td colspan="4" class="text-center text-muted py-3">Tidak ada data harian.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                @if($rekapHarian->isNotEmpty())
+                    <div class="border-top pt-2 mt-auto">
+                        <table class="table table-sm mb-0 text-nowrap fs-7 border-0">
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td>Total Harian</td>
+                                    <td class="text-center">{{ $rekapHarian->sum('total_transaksi') }}</td>
+                                    <td class="text-center">{{ $rekapHarian->sum('total_kuantitas') }} Pcs</td>
+                                    <td class="text-end">Rp {{ number_format($rekapHarian->sum('total_penjualan'), 0, ',', '.') }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Rekap Mingguan -->
+        <div class="col-lg-6 col-12">
+            <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="fw-bold text-dark mb-0 fs-7">Rekap Mingguan</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover align-middle mb-0 text-nowrap fs-7">
+                        <thead class="table-dark sticky-top">
+                            <tr>
+                                <th>Minggu Ke-</th>
+                                <th>Rentang Tanggal</th>
+                                <th class="text-center">Jml Transaksi</th>
+                                <th class="text-center">Kuantitas</th>
+                                <th class="text-end">Total Penjualan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(isset($rekapMingguan) && count($rekapMingguan) > 0)
+                                @foreach($rekapMingguan as $minggu)
+                                    <tr>
+                                        <td class="fw-medium">Minggu {{ $minggu['minggu_ke'] }}</td>
+                                        <td>{{ $minggu['rentang_tanggal'] }}</td>
+                                        <td class="text-center">
+                                            <span class="badge {{ $minggu['jumlah_transaksi'] > 0 ? 'bg-primary-subtle text-primary' : 'bg-secondary-subtle text-secondary' }} px-2 py-1">
+                                                {{ $minggu['jumlah_transaksi'] }}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if($minggu['total_kuantitas'] > 0)
+                                                <span class="badge bg-warning-subtle text-warning fw-bold px-2 py-1">
+                                                    {{ $minggu['total_kuantitas'] }} Pcs
+                                                </span>
+                                            @else
+                                                0 Pcs
+                                            @endif
+                                        </td>
+                                        <td class="text-end {{ $minggu['total_penjualan'] > 0 ? 'fw-semibold' : '' }}">
+                                            Rp {{ number_format($minggu['total_penjualan'], 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-3">Tidak ada data mingguan.</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+
+                @if(isset($rekapMingguan) && count($rekapMingguan) > 0)
+                    <div class="border-top pt-2 mt-auto">
+                        <table class="table table-sm mb-0 text-nowrap fs-7 border-0">
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td colspan="2">Total Mingguan</td>
+                                    <td class="text-center">{{ collect($rekapMingguan)->sum('jumlah_transaksi') }}</td>
+                                    <td class="text-center">{{ collect($rekapMingguan)->sum('total_kuantitas') }} Pcs</td>
+                                    <td class="text-end">Rp {{ number_format(collect($rekapMingguan)->sum('total_penjualan'), 0, ',', '.') }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Tabel Best Seller -->
+    <div class="row g-2 row-table-flex" style="flex: 2;">
+        <div class="col-12">
+            <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="fw-bold text-dark mb-0 fs-7">Best Seller (Produk Terlaris Bulan Ini)</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover align-middle mb-0 text-nowrap fs-7">
+                        <thead class="table-dark sticky-top">
+                            <tr>
+                                <th>Nama Produk</th>
+                                <th class="text-center">Stok Tersedia</th>
+                                <th class="text-center">Unit Terjual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($produkTerlaris as $produk)
+                                <tr>
+                                    <td class="fw-medium">{{ $produk->nama }}</td>
+                                    <td class="text-center">{{ $produk->stok ?? 0 }} Pcs</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-success-subtle text-success fw-bold px-3 py-1">
+                                            {{ $produk->total_terjual }} Terjual
+                                        </span>
                                     </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-2">Belum ada penjualan produk bulan ini.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -171,5 +240,6 @@
             </div>
         </div>
     </div>
+
 </div>
 @endsection

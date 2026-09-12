@@ -56,27 +56,28 @@
                 </div>
             </form>
 
-            <div class="card border-0 shadow-sm p-3 bg-white rounded-3">
+            <!-- Card dibuat overflow-hidden & p-0 agar tabel menempel sempurna -->
+            <div class="card border-0 shadow-sm bg-white rounded-3 overflow-hidden p-0">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-dark">
                             <tr>
-                                <th scope="col" style="width: 8%;">#</th>
-                                <th scope="col">Nama Jenis</th>
+                                <th scope="col" class="ps-3" style="width: 50px;">#</th>
+                                <th scope="col" class="text-center">Nama Jenis</th>
                                 
                                 @can('create', App\Models\Jenis::class)
-                                    <th scope="col" class="text-center" style="width: 200px;">Aksi</th>
+                                    <th scope="col" class="text-center pe-3" style="width: 200px;">Aksi</th>
                                 @endcan
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($jenis as $index => $item)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td class="fw-medium">{{ $item->nama_jenis }}</td>
+                                    <td class="ps-3">{{ $loop->iteration }}</td>
+                                    <td class="fw-medium text-center">{{ $item->nama_jenis }}</td>
                                     
                                     @can('update', $item)
-                                    <td class="text-center">
+                                    <td class="text-center pe-3">
                                         <div class="d-flex justify-content-center gap-1">
                                             <button 
                                                 type="button" 

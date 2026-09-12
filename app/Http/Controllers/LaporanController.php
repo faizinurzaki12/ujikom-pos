@@ -29,6 +29,7 @@ class LaporanController extends Controller
             'namaBulanTahun' => Carbon::create($tahun, $bulan, 1)->translatedFormat('F Y'),
             'ringkasan' => $this->laporanService->rekapBulanan($bulan, $tahun),
             'rekapHarian' => $this->laporanService->rekapHarianDalamBulan($bulan, $tahun),
+            'rekapMingguan' => $this->laporanService->rekapMingguanBulanan($bulan, $tahun), // Tambahkan baris ini
             'produkTerlaris' => $this->laporanService->produkTerlarisBulanan($bulan, $tahun),
             'daftarTahun' => $daftarTahun,
         ]);

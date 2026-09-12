@@ -9,12 +9,12 @@ class JenisPolicy
 {
     public function viewAny(User $user): bool
     {
-        return in_array(strtolower($user->role?->name ?? ''), ['admin', 'kasir'], true);
+        return in_array(strtolower($user->role?->name ?? ''), ['admin'], true);
     }
 
     public function view(User $user, Jenis $jenis): bool
     {
-        return in_array(strtolower($user->role?->name ?? ''), ['admin', 'kasir'], true);
+        return in_array(strtolower($user->role?->name ?? ''), ['admin'], true);
     }
 
     public function create(User $user): bool
