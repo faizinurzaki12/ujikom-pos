@@ -11,7 +11,7 @@
                     {{ number_format(session('foto_original_size') / 1048576, 2) }} MB
                 </span>
                 <span class="badge bg-success">
-                    {{ number_format(session('foto_compressed_size') / 1024, 0) }} KB
+                    {{ number_format(session('foto_compressed_size') / 1024, 0) }} KB (Max 70 KB)
                 </span>
             </div>
         </div>
@@ -125,43 +125,6 @@
     @enderror
 </div>
 
-<!-- ==================== BAGIAN CASH, INPUT, KEMBALIAN ==================== -->
-<div class="col-md-12 mt-4 p-3 border rounded bg-light">
-
-    <!-- Cash -->
-    <div class="mb-3">
-        <label class="form-label fw-bold">Cash</label>
-        <select class="form-select" name="metode_bayar" id="metodeBayar">
-            <option value="cash">Tunai / Cash</option>
-        </select>
-    </div>
-
-    <!-- Input Uang -->
-    <div class="mb-3">
-        <label for="inputUang" class="form-label fw-bold">Input</label>
-        <input type="number" 
-               name="uang_diberikan" 
-               id="inputUang" 
-               class="form-control" 
-               placeholder="Masukkan jumlah uang..."
-               oninput="hitungKembalian()">
-    </div>
-
-    <!-- Kembalian + Pesan Uang Kurang -->
-    <div class="mb-1">
-        <div class="d-flex justify-content-between align-items-center">
-            <span class="fw-bold">Kembalian</span>
-            <div class="text-end">
-                <div id="textKembalian" class="fw-bold">Rp.0</div>
-                <div id="pesanUangKurang" class="text-danger small fw-semibold d-none">
-                    Uang Kurang
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
 <!-- Tombol Aksi -->
 <div class="col-12 mt-4">
     <button type="submit" class="btn btn-success">Simpan</button>
@@ -182,7 +145,7 @@
             const sizeKb = (file.size / 1024).toFixed(0);
 
             sizeInfo.innerHTML = `
-                <span class="badge bg-secondary me-1">${sizeMb} MB</span>
+                <span class="badge bg-secondary me-1">${sizeMb} MB</span> ->
                 <span class="badge bg-success">${sizeKb} KB</span>
             `;
         } else {
@@ -190,42 +153,4 @@
             sizeInfo.innerHTML = '';
         }
     }
-
-    function hitungKembalian() {
-        const totalHarga = parseFloat(document.getElementById('validationServerSellingPrice').value) || 0;
-        const inputUang = parseFloat(document.getElementById('inputUang').value) || 0;
-
-        const textKembalian = document.getElementById('textKembalian');
-        const pesanUangKurang = document.getElementById('pesanUangKurang');
-
-        const selisih = inputUang - totalHarga;
-
-        if (inputUang === 0) {
-            textKembalian.innerText = 'Rp.0';
-            pesanUangKurang.classList.add('d-none');
-            return;
-        }
-
-        if (selisih >= 0) {
-            // Uang cukup
-            textKembalian.innerText = 'Rp.' + selisih.toLocaleString('id-ID');
-            pesanUangKurang.classList.add('d-none');
-        } else {
-            // Uang kurang
-            textKembalian.innerText = 'Rp.0';
-            pesanUangKurang.classList.remove('d-none');
-        }
-    }
-
-    // Validasi saat tombol Simpan diklik
-    document.querySelector('form').addEventListener('submit', function(e) {
-        const totalHarga = parseFloat(document.getElementById('validationServerSellingPrice').value) || 0;
-        const inputUang = parseFloat(document.getElementById('inputUang').value) || 0;
-
-        if (inputUang < totalHarga) {
-            e.preventDefault();
-            document.getElementById('pesanUangKurang').classList.remove('d-none');
-            document.getElementById('inputUang').focus();
-        }
-    });
 </script>

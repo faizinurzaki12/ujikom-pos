@@ -129,7 +129,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="text-center text-muted py-3">Keranjang kosong</td>
+                                    <td colspan="6" class="text-center text-muted py-3">Keranjang kosong</td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -148,7 +148,7 @@
                         @csrf
                         @method('PUT')
 
-                        <select name="payment_method" id="paymentMethod" class="form-select mb-3 @error('payment_method') is-invalid @enderror">
+                        <select name="payment_method" id="paymentMethod" class="form-select mb-3 @error('payment_method') is-invalid @enderror" onchange="togglePaymentInputs()">
                             <option value="">Pilih Pembayaran</option>
                             <option value="CASH" {{ old('payment_method') === 'CASH' ? 'selected' : '' }}>Cash</option>
                             <option value="QRIS" {{ old('payment_method') === 'QRIS' ? 'selected' : '' }}>QRIS</option>
@@ -158,21 +158,37 @@
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
+                        <!-- BAGIAN INPUT CASH & KEMBALIAN FITUR LENGKAP -->
                         <div id="cashInputWrapper" class="mb-3 d-none">
-                            <label class="form-label small fw-semibold">Uang Dibayar</label>
-                            <input type="text" inputmode="numeric" name="uang_dibayar" id="uangDibayar"
-                            class="form-control mb-2 @error('uang_dibayar') is-invalid @enderror"
-                            placeholder="Masukkan jumlah uang tunai"
-                            value="{{ old('uang_dibayar') }}"
-                            autocomplete="off">
-                            @error('uang_dibayar')
-                                <div class="text-danger small mb-2">{{ $message }}</div>
-                            @enderror
+                            <div class="p-3 border rounded bg-light mb-3">
+                                <div class="mb-3">
+                                    <label for="inputUang" class="form-label small fw-semibold"> Uang Dibayar</label>
+                                    <input type="text" 
+                                           name="uang_dibayar" 
+                                           id="inputUang" 
+                                           class="form-control @error('uang_dibayar') is-invalid @enderror" 
+                                           placeholder="Masukkan jumlah uang tunai..."
+                                           value="{{ old('uang_dibayar') }}"
+                                           autocomplete="off"
+                                           oninput="formatRupiahInput(this); hitungKembalian();">
+                                    @error('uang_dibayar')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                            <label class="form-label small fw-semibold">Kembalian</label>
-                            <input type="text" id="kembalianDisplay" class="form-control" readonly value="Rp 0">
-                            <div id="kurangInfo" class="text-danger small mt-1 d-none"></div>
-                            <input type="hidden" name="kembalian" id="kembalianInput" value="0">
+                                <div class="mb-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold">Kembalian</span>
+                                        <div class="text-end">
+                                            <div id="textKembalian" class="fw-bold">Rp.0</div>
+                                            <div id="pesanUangKurang" class="text-danger small fw-semibold d-none">
+                                                Uang Kurang
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="kembalian" id="kembalianInput" value="0">
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-success w-100 py-2 fw-semibold {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}">
@@ -199,6 +215,88 @@
     </div>
 </div>
 
-<script src="{{ asset('assets/js/penjualan-checkout.js') }}"></script>
+<script>
+    function formatRupiahInput(element) {
+        let value = element.value.replace(/[^0-9]/g, '');
+        if (value) {
+            element.value = parseInt(value, 10).toLocaleString('id-ID');
+        } else {
+            element.value = '';
+        }
+    }
+
+    function togglePaymentInputs() {
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        const cashWrapper = document.getElementById('cashInputWrapper');
+        
+        if (paymentMethod === 'CASH') {
+            cashWrapper.classList.remove('d-none');
+            const inputUang = document.getElementById('inputUang');
+            if (inputUang.value) {
+                formatRupiahInput(inputUang);
+            }
+            hitungKembalian();
+        } else {
+            cashWrapper.classList.add('d-none');
+        }
+    }
+
+    function hitungKembalian() {
+        const checkoutForm = document.getElementById('checkoutForm');
+        const totalHarga = parseFloat(checkoutForm.getAttribute('data-total')) || 0;
+        
+        const rawValue = document.getElementById('inputUang').value.replace(/[^0-9]/g, '');
+        const inputUang = parseFloat(rawValue) || 0;
+
+        const textKembalian = document.getElementById('textKembalian');
+        const pesanUangKurang = document.getElementById('pesanUangKurang');
+        const kembalianInput = document.getElementById('kembalianInput');
+
+        const selisih = inputUang - totalHarga;
+
+        if (inputUang === 0) {
+            textKembalian.innerText = 'Rp.0';
+            kembalianInput.value = 0;
+            pesanUangKurang.classList.add('d-none');
+            return;
+        }
+
+        if (selisih >= 0) {
+            // Uang cukup
+            textKembalian.innerText = 'Rp.' + selisih.toLocaleString('id-ID');
+            kembalianInput.value = selisih;
+            pesanUangKurang.classList.add('d-none');
+        } else {
+            // Uang kurang -> Menghitung nominal kurangnya
+            const kekurangannya = Math.abs(selisih);
+            textKembalian.innerText = 'Rp.0';
+            kembalianInput.value = 0;
+            
+            // Tampilkan teks nominal kurang
+            pesanUangKurang.innerText = 'Uang Kurang Rp.' + kekurangannya.toLocaleString('id-ID');
+            pesanUangKurang.classList.remove('d-none');
+        }
+    }
+
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        
+        if (paymentMethod === 'CASH') {
+            const totalHarga = parseFloat(this.getAttribute('data-total')) || 0;
+            const rawValue = document.getElementById('inputUang').value.replace(/[^0-9]/g, '');
+            const inputUang = parseFloat(rawValue) || 0;
+
+            if (inputUang < totalHarga) {
+                e.preventDefault();
+                document.getElementById('pesanUangKurang').classList.remove('d-none');
+                document.getElementById('inputUang').focus();
+            }
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        togglePaymentInputs();
+    });
+</script>
 
 @endsection
