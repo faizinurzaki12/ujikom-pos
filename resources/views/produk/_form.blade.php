@@ -88,25 +88,29 @@
 
 <!-- Harga Beli -->
 <div class="col-md-12">
-    <label for="validationServerPurchasePrice" class="form-label">Harga Beli</label>
-    <input type="number" name="purchase_price" id="validationServerPurchasePrice" 
+    <label for="displayPurchasePrice" class="form-label">Harga Beli</label>
+    <input type="text" id="displayPurchasePrice" 
            class="form-control @error('purchase_price') is-invalid @enderror" 
-           value="{{ old('purchase_price' , $produk->harga_beli ?? '') }}"> 
+           onkeyup="formatRupiahInput(this, 'validationServerPurchasePrice')">
+    <input type="hidden" name="purchase_price" id="validationServerPurchasePrice" 
+           value="{{ old('purchase_price' , $produk->harga_beli ?? '') }}">
     @error('purchase_price')
-        <div id="validationServerPurchasePriceFeedback" class="invalid-feedback">
+        <div id="validationServerPurchasePriceFeedback" class="invalid-feedback d-block">
             {{ $message }}
         </div>
     @enderror
 </div>
 
-<!-- Harga jual -->
+<!-- Harga Jual -->
 <div class="col-md-12">
-    <label for="validationServerSellingPrice" class="form-label">Harga Jual</label>
-    <input type="number" name="selling_price" id="validationServerSellingPrice" 
+    <label for="displaySellingPrice" class="form-label">Harga Jual</label>
+    <input type="text" id="displaySellingPrice" 
            class="form-control @error('selling_price') is-invalid @enderror" 
+           onkeyup="formatRupiahInput(this, 'validationServerSellingPrice')">
+    <input type="hidden" name="selling_price" id="validationServerSellingPrice" 
            value="{{ old('selling_price' , $produk->harga_jual ?? '') }}">
     @error('selling_price')
-        <div id="validationServerSellingPriceFeedback" class="invalid-feedback">
+        <div id="validationServerSellingPriceFeedback" class="invalid-feedback d-block">
             {{ $message }}
         </div>
     @enderror
@@ -132,6 +136,42 @@
 </div>
 
 <script>
+    function formatNumber(angka) {
+        let numberString = angka.replace(/[^,\d]/g, '').toString(),
+            split = numberString.split(','),
+            sisa  = split[0].length % 3,
+            result = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            let separator = sisa ? '.' : '';
+            result += separator + ribuan.join('.');
+        }
+
+        return split[1] !== undefined ? result + ',' + split[1] : result;
+    }
+
+    function formatRupiahInput(input, hiddenId) {
+        let rawValue = input.value.replace(/[^0-9]/g, '');
+        document.getElementById(hiddenId).value = rawValue;
+        input.value = formatNumber(rawValue);
+    }
+
+    // Inisialisasi format saat halaman pertama kali dimuat (Mode Edit / Old Input)
+    document.addEventListener("DOMContentLoaded", function () {
+        const purchaseHidden = document.getElementById('validationServerPurchasePrice');
+        const purchaseDisplay = document.getElementById('displayPurchasePrice');
+        if (purchaseHidden.value) {
+            purchaseDisplay.value = formatNumber(purchaseHidden.value);
+        }
+
+        const sellingHidden = document.getElementById('validationServerSellingPrice');
+        const sellingDisplay = document.getElementById('displaySellingPrice');
+        if (sellingHidden.value) {
+            sellingDisplay.value = formatNumber(sellingHidden.value);
+        }
+    });
+
     function previewImage(input) {
         const preview = document.getElementById('preview');
         const sizeInfo = document.getElementById('previewSizeInfo');
@@ -143,11 +183,10 @@
 
             const sizeMb = (file.size / 1048576).toFixed(2);
             const sizeKb = (file.size / 1024).toFixed(0);
-
-            sizeInfo.innerHTML = `
-                <span class="badge bg-secondary me-1">${sizeMb} MB</span> ->
-                <span class="badge bg-success">${sizeKb} KB</span>
-            `;
+            // sizeInfo.innerHTML = `
+            //     <span class="badge bg-secondary me-1">${sizeMb} MB</span> ->
+            //     <span class="badge bg-success">${sizeKb} KB</span>
+            // `;
         } else {
             preview.style.display = 'none';
             sizeInfo.innerHTML = '';

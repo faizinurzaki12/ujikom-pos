@@ -1,2 +1,2 @@
-composer require intervention/image
-composer require intervention/image-laravel
+QRIS_API_URL="https://api.qrserver.com/v1/create-qr-code/"
+QRIS_IMAGE_PATH="img/qris-saya.png"

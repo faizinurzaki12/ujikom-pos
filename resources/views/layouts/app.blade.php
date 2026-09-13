@@ -98,7 +98,7 @@
                 </div>
             </nav>
 
-            <div class="main-content {{ Request::routeIs('dashboard') || Request::routeIs('laporan.bulanan') ? 'no-page-scroll' : '' }}">
+            <div class="main-content {{ Request::routeIs('dashboard') ? 'no-page-scroll' : '' }}">
                @if(session('success'))
                 <div class="popup-alert-overlay" id="popupAlert">
                     <div class="popup-alert popup-success">

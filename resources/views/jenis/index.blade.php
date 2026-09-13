@@ -14,7 +14,7 @@
         @can('create', App\Models\Jenis::class)
             <div class="position-absolute end-0 top-50 translate-middle-y w-auto pe-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createJenisModal">
-                    <i class="bi bi-plus-lg me-1"></i> Create Jenis
+                    <i class="bi bi-plus-lg me-1"></i> Tambah
                 </button>
             </div>
         @endcan
@@ -51,7 +51,7 @@
                         <i class="bi bi-search me-1"></i> Search
                     </button>
                     @if(request('search'))
-                        <a href="{{ route('jenis.index') }}" class="btn btn-outline-secondary">Reset</a>
+                        <a href="{{ route('jenis.index') }}" class="btn btn-outline-primary">Reset</a>
                     @endif
                 </div>
             </form>
@@ -86,7 +86,7 @@
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#editJenisModal-{{ $item->id }}"
                                             >
-                                                <i class="bi bi-pencil-square"></i> Edit
+                                                <i class="bi bi-pencil-square"></i>
                                             </button>
 
                                             @can('delete', $item)
@@ -99,7 +99,7 @@
                                                     class="btn btn-sm btn-outline-danger text-nowrap"
                                                     onclick="return confirm('Yakin hapus jenis &quot;{{ $item->nama_jenis }}&quot;?')"
                                                 >
-                                                    <i class="bi bi-trash"></i> Hapus
+                                                    <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
                                             @endcan

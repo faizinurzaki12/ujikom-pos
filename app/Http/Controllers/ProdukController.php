@@ -70,7 +70,7 @@ class ProdukController extends Controller
 
         $produk = Produk::create($data);
 
-        return redirect()->route('produk.create', $produk->id)->with('success', 'Product created successfully.');
+        return redirect()->route('produk.index', $produk->id)->with('success', 'Product created successfully.');
     }
 
     /**

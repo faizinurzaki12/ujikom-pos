@@ -12,7 +12,7 @@
         </a>
     </div>
 
-    @if(session('errors'))
+    @if(session('errors') && !is_object(session('errors')))
         <div class="alert alert-danger">
             {{ session('errors') }}
         </div>
@@ -24,7 +24,7 @@
 
     <div class="row g-4">
 
-        {{-- ================== PRODUK ================== --}}
+        {{-- ================== DAFTAR PRODUK ================== --}}
         <div class="col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-body p-3" style="max-height: 70vh; overflow-y: auto">
@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        {{-- ================== KERANJANG ================== --}}
+        {{-- ================== KERANJANG BELANJA ================== --}}
         <div class="col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
@@ -143,26 +143,25 @@
 
                     {{-- ================== FORM CHECKOUT ================== --}}
                     <form method="POST" action="{{ route('penjualan.update', $sale->id) }}"
-                        onsubmit="return confirm('Yakin ingin checkout?');" id="checkoutForm"
+                        onsubmit="return handleCheckoutSubmit(event);" id="checkoutForm"
                         data-total="{{ $sale->total_pembayaran }}">
                         @csrf
                         @method('PUT')
 
                         <select name="payment_method" id="paymentMethod" class="form-select mb-3 @error('payment_method') is-invalid @enderror" onchange="togglePaymentInputs()">
                             <option value="">Pilih Pembayaran</option>
-                            <option value="CASH" {{ old('payment_method') === 'CASH' ? 'selected' : '' }}>Cash</option>
-                            <option value="QRIS" {{ old('payment_method') === 'QRIS' ? 'selected' : '' }}>QRIS</option>
-                            <option value="BAYAR_NANTI" {{ old('payment_method') === 'BAYAR_NANTI' ? 'selected' : '' }}>Bayar Nanti</option>
+                            <option value="CASH" {{ old('payment_method') === 'CASH' ? 'selected' : '' }}>Cash (Tunai)</option>
+                            <option value="QRIS" {{ old('payment_method') === 'QRIS' ? 'selected' : '' }}>QRIS (Simulasi)</option>
                         </select>
                         @error('payment_method')
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
-                        <!-- BAGIAN INPUT CASH & KEMBALIAN FITUR LENGKAP -->
+                        <!-- INPUT PEMBAYARAN CASH -->
                         <div id="cashInputWrapper" class="mb-3 d-none">
                             <div class="p-3 border rounded bg-light mb-3">
                                 <div class="mb-3">
-                                    <label for="inputUang" class="form-label small fw-semibold"> Uang Dibayar</label>
+                                    <label for="inputUang" class="form-label small fw-semibold">Uang Dibayar</label>
                                     <input type="text" 
                                            name="uang_dibayar" 
                                            id="inputUang" 
@@ -191,8 +190,31 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-success w-100 py-2 fw-semibold {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}">
-                            Checkout
+                        <!-- DISPLAY QRIS DUMMY -->
+                        <div id="qrisInputWrapper" class="mb-3 d-none">
+                            <div class="p-3 border rounded bg-light text-center">
+                                <span class="badge bg-primary mb-2">Sistem Pembayaran QRIS</span>
+                                <h6 class="fw-bold text-dark mb-1">Pindai Kode QR</h6>
+                                <p class="text-muted small mb-2">Simulasi QRIS Pembayaran Toko Kasir</p>
+
+                                <div class="d-inline-block p-2 bg-white rounded shadow-sm border mb-2">
+                                    <img src="https://quickchart.io/qr?text=SIMULASI_QRIS_UJIKOM_SALE_{{ $sale->id }}_TOTAL_{{ $sale->total_pembayaran }}&size=180" 
+                                         alt="QRIS Simulasi" 
+                                         class="img-fluid"
+                                         style="max-width: 180px; height: auto;">
+                                </div>
+
+                                <div class="fw-bold text-success mb-1">
+                                    Total Tagihan: Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}
+                                </div>
+                                <small class="text-muted d-block">Klik tombol Checkout di bawah untuk mensimulasikan pembayaran lunas.</small>
+                            </div>
+                        </div>
+
+                        <!-- TOMBOL CHECKOUT & LOADING SPINNER -->
+                        <button type="submit" id="btnSubmitCheckout" class="btn btn-success w-100 py-2 fw-semibold {{ $sale->status === 'COMPLETED' ? 'disabled' : '' }}">
+                            <span id="btnText">Checkout</span>
+                            <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                         </button>
                     </form>
 
@@ -228,7 +250,11 @@
     function togglePaymentInputs() {
         const paymentMethod = document.getElementById('paymentMethod').value;
         const cashWrapper = document.getElementById('cashInputWrapper');
+        const qrisWrapper = document.getElementById('qrisInputWrapper');
         
+        cashWrapper.classList.add('d-none');
+        qrisWrapper.classList.add('d-none');
+
         if (paymentMethod === 'CASH') {
             cashWrapper.classList.remove('d-none');
             const inputUang = document.getElementById('inputUang');
@@ -236,8 +262,8 @@
                 formatRupiahInput(inputUang);
             }
             hitungKembalian();
-        } else {
-            cashWrapper.classList.add('d-none');
+        } else if (paymentMethod === 'QRIS') {
+            qrisWrapper.classList.remove('d-none');
         }
     }
 
@@ -262,27 +288,24 @@
         }
 
         if (selisih >= 0) {
-            // Uang cukup
             textKembalian.innerText = 'Rp.' + selisih.toLocaleString('id-ID');
             kembalianInput.value = selisih;
             pesanUangKurang.classList.add('d-none');
         } else {
-            // Uang kurang -> Menghitung nominal kurangnya
             const kekurangannya = Math.abs(selisih);
             textKembalian.innerText = 'Rp.0';
             kembalianInput.value = 0;
-            
-            // Tampilkan teks nominal kurang
             pesanUangKurang.innerText = 'Uang Kurang Rp.' + kekurangannya.toLocaleString('id-ID');
             pesanUangKurang.classList.remove('d-none');
         }
     }
 
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    function handleCheckoutSubmit(e) {
         const paymentMethod = document.getElementById('paymentMethod').value;
+        const checkoutForm = document.getElementById('checkoutForm');
         
         if (paymentMethod === 'CASH') {
-            const totalHarga = parseFloat(this.getAttribute('data-total')) || 0;
+            const totalHarga = parseFloat(checkoutForm.getAttribute('data-total')) || 0;
             const rawValue = document.getElementById('inputUang').value.replace(/[^0-9]/g, '');
             const inputUang = parseFloat(rawValue) || 0;
 
@@ -290,9 +313,35 @@
                 e.preventDefault();
                 document.getElementById('pesanUangKurang').classList.remove('d-none');
                 document.getElementById('inputUang').focus();
+                return false;
             }
         }
-    });
+
+        if (!confirm('Proses checkout transaksi ini?')) {
+            e.preventDefault();
+            return false;
+        }
+
+        if (paymentMethod === 'QRIS') {
+            e.preventDefault();
+
+            const btnSubmit = document.getElementById('btnSubmitCheckout');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+
+            btnSubmit.classList.add('disabled');
+            btnText.innerText = 'Memverifikasi Status Pembayaran QRIS...';
+            btnSpinner.classList.remove('d-none');
+
+            setTimeout(function() {
+                checkoutForm.submit();
+            }, 2500);
+
+            return false;
+        }
+
+        return true;
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         togglePaymentInputs();

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\SearchRequest;
 use App\Models\Penjualan;
 use App\Models\Produk;
@@ -19,25 +20,22 @@ class PenjualanController extends Controller
         $keyword = $request->input('search');
 
         $sales = Penjualan::query()
-        ->with(['user', 'itemPenjualan.produk.jenis'])
-        ->when($user->role->name === 'kasir', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })
-
-        // 🔍 Search nama user
-        ->when($keyword, function ($query) use ($keyword) {
-            $query->whereHas('user', function ($q) use ($keyword) {
-                $q->where('name', 'like', '%' . $keyword . '%');
-            });
-        })
-
-        ->latest()
-        ->paginate(10)
-        ->withQueryString();
+            ->with(['user', 'itemPenjualan.produk.jenis'])
+            ->when($user->role->name === 'kasir', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            // 🔍 Search nama user
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->whereHas('user', function ($q) use ($keyword) {
+                    $q->where('name', 'like', '%' . $keyword . '%');
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         return view('penjualan.index', compact('sales'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -45,19 +43,19 @@ class PenjualanController extends Controller
     public function create(SearchRequest $request)
     {
         $sale = Penjualan::firstOrCreate(
-        [
-            'user_id' => Auth::id(),
-            'status'  => 'OPEN'
-        ],
-        [
-            'total_pembayaran'  => 0,
-            'metode_pembayaran' => 'CASH'
-        ]
-    );
+            [
+                'user_id' => Auth::id(),
+                'status'  => 'OPEN'
+            ],
+            [
+                'total_pembayaran'  => 0,
+                'metode_pembayaran' => 'CASH'
+            ]
+        );
 
-    $keyword = $request->input('search');
+        $keyword = $request->input('search');
 
-        if($keyword) {
+        if ($keyword) {
             $products = Produk::when($keyword, function ($query) use ($keyword) {
                 $query->where('nama', 'like', '%' . $keyword . '%');
             })
@@ -67,10 +65,9 @@ class PenjualanController extends Controller
             $products = Produk::orderBy('nama')->get();
         }
 
-    $mode = 'create';
+        $mode = 'create';
 
-    return view('penjualan.pos', compact('sale', 'products', 'mode'));
-
+        return view('penjualan.pos', compact('sale', 'products', 'mode'));
     }
 
     /**
@@ -100,7 +97,6 @@ class PenjualanController extends Controller
      */
     public function edit(Penjualan $penjualan)
     {
-        // Memastikan izin via policy
         $this->authorize('update', $penjualan);
 
         $sale = $penjualan;
@@ -118,8 +114,8 @@ class PenjualanController extends Controller
     {
         $request->validate([
             'payment_method' => 'required|in:CASH,QRIS,BAYAR_NANTI',
-            'uang_dibayar' => 'nullable',
-            'kembalian' => 'nullable',
+            'uang_dibayar'   => 'nullable',
+            'kembalian'      => 'nullable',
         ]);
 
         if ($penjualan->status == 'COMPLETED') {
@@ -139,9 +135,12 @@ class PenjualanController extends Controller
 
         // Validasi khusus jika metode pembayaran CASH
         if ($request->payment_method === 'CASH') {
-            // Memastikan data diambil secara aman (pakai float/numeric, fallback ke 0 jika kosong)
-            $uangDibayar = floatval($request->input('uang_dibayar', 0));
-            $kembalian = floatval($request->input('kembalian', 0));
+            // Bersihkan format ribuan bertitik dari JavaScript (misal "2.000.000" -> "2000000")
+            $rawUang = $request->input('uang_dibayar', 0);
+            $rawKembalian = $request->input('kembalian', 0);
+
+            $uangDibayar = floatval(preg_replace('/[^0-9]/', '', $rawUang));
+            $kembalian = floatval(preg_replace('/[^0-9]/', '', $rawKembalian));
 
             if ($uangDibayar < $total) {
                 return back()->withErrors(['uang_dibayar' => 'Uang tunai dari pelanggan kurang dari total pembayaran!'])->withInput();
@@ -153,10 +152,10 @@ class PenjualanController extends Controller
         DB::transaction(function () use ($penjualan, $request, $total, $newStatus, $uangDibayar, $kembalian) {
             $penjualan->update([
                 'metode_pembayaran' => $request->payment_method,
-                'total_pembayaran' => $total,
-                'uang_dibayar' => $uangDibayar,
-                'kembalian' => $kembalian,
-                'status' => $newStatus
+                'total_pembayaran'  => $total,
+                'uang_dibayar'      => $uangDibayar,
+                'kembalian'         => $kembalian,
+                'status'            => $newStatus
             ]);
         });
 
@@ -176,21 +175,20 @@ class PenjualanController extends Controller
     {
         $this->authorize('delete', $penjualan);
 
-        // ! pastikan hanya transaksi OPEN
-        if($penjualan->status !== 'OPEN') {
+        if ($penjualan->status !== 'OPEN') {
             return redirect()->route('penjualan.index')->with('errors', 'Transaksi Sudah selesai tidak bisa dibatalkan');
         }
 
         DB::transaction(function() use ($penjualan) {
             foreach ($penjualan->itemPenjualan as $item) {
-                // kembalikan stok nya 
+                // Kembalikan stoknya
                 $item->produk->increment('stok', $item->kuantitas);
             }
 
-            // hapus item nya
+            // Hapus itemnya
             $penjualan->itemPenjualan()->delete();
 
-            // hapus penjualan
+            // Hapus penjualan
             $penjualan->delete();
         });
         

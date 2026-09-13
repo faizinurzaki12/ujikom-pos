@@ -53,8 +53,8 @@
         <div class="col-12 col-md-6">
             <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
                 <div class="d-flex justify-content-between align-items-center mb-1 px-1">
-                    <span class="text-secondary mb-0 fw-semibold fs-7">⚠️ Stok Rendah</span>
-                    <span class="badge bg-warning text-dark">Perlu Perhatian</span>
+                    <span class="text-secondary mb-0 fw-semibold fs-7">Stok Rendah</span>
+                    <span class="badge bg-primary text-dark">Perlu Perhatian</span>
                 </div>
                 <div class="table-responsive table-scroll-limited">
                     <table class="table table-sm table-hover align-middle mb-0">
@@ -87,8 +87,8 @@
         <div class="col-12 col-md-6">
             <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
                 <div class="d-flex justify-content-between align-items-center mb-1 px-1">
-                    <span class="text-secondary mb-0 fw-semibold fs-7">❌ Habis Stok</span>
-                    <span class="badge bg-danger">Urgent</span>
+                    <span class="text-secondary mb-0 fw-semibold fs-7">Stok habis</span>
+                    <span class="badge bg-primary text-dark">Urgent</span>
                 </div>
                 <div class="table-responsive table-scroll-limited">
                     <table class="table table-sm table-hover align-middle mb-0">
