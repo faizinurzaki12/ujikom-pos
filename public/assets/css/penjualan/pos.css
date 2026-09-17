@@ -1,0 +1,96 @@
+/* ==========================================================================
+   STYLE HALAMAN FORM POS / PENJUALAN
+   ========================================================================== */
+
+.pos-container {
+    padding-bottom: 2rem;
+}
+
+/* Area Scroll Katalog Produk */
+.product-scroll-wrapper {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Ukuran thumbnail foto produk */
+.product-thumb {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+/* Ukuran input Qty di Katalog */
+.pos-qty-input {
+    width: 100% !important;
+}
+
+/* Card item produk hover effect */
+.pos-product-item .btn-outline-primary {
+    transition: all 0.2s ease;
+}
+
+.pos-product-item .btn-outline-primary:hover {
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.12);
+}
+
+/* ==========================================================================
+   RESPONSIF MOBILE (Layar <= 767.98px)
+   ========================================================================== */
+
+@media (max-width: 767.98px) {
+
+    /* Ubah tabel keranjang menjadi Card List di Mobile */
+    .cart-table-wrapper table thead {
+        display: none !important;
+    }
+
+    .cart-table-wrapper table,
+    .cart-table-wrapper tbody,
+    .cart-table-wrapper tr {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    /* Hanya berlaku untuk baris yang BERISI PRODUK */
+    .cart-table-wrapper tr:has(td[data-label]) {
+        margin-bottom: 0.75rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: #fff;
+    }
+
+    /* Hanya TD yang punya data-label yang dijadikan FLEX */
+    .cart-table-wrapper td[data-label] {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        border: none !important;
+        border-bottom: 1px dashed #f1f5f9 !important;
+        padding: 6px 0 !important;
+    }
+
+    .cart-table-wrapper td[data-label]:last-child {
+        border-bottom: none !important;
+    }
+
+    .cart-table-wrapper td[data-label]::before {
+        content: attr(data-label);
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    /* Khusus baris KERANJANG KOSONG agar tetap center */
+    .cart-table-wrapper td:not([data-label]) {
+        display: block !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    /* Penyesuaian form qty di dalam card mobile */
+    .cart-table-wrapper td[data-label="Qty"] form {
+        width: 70px;
+    }
+}

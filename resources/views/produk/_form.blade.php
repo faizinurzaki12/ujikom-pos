@@ -7,12 +7,12 @@
                  class="card-img-top img-thumbnail"
                  alt="Foto produk">
             <div class="card-body d-flex gap-2 justify-content-center p-2">
-                <span class="badge bg-secondary">
+                <!-- <span class="badge bg-secondary">
                     {{ number_format(session('foto_original_size') / 1048576, 2) }} MB
-                </span>
-                <span class="badge bg-success">
+                </span> -->
+                <!-- <span class="badge bg-success">
                     {{ number_format(session('foto_compressed_size') / 1024, 0) }} KB (Max 70 KB)
-                </span>
+                </span> -->
             </div>
         </div>
     </div>

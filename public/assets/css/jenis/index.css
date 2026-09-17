@@ -1,0 +1,61 @@
+
+@media (max-width: 767.98px) {
+    /* 1. Sembunyikan thead hitam desktop */
+    .table-responsive table.table thead {
+        display: none !important;
+    }
+
+    /* 2. Ubah baris TR jadi Card terpisah */
+    .table-responsive table.table tbody tr {
+        display: block !important;
+        margin-bottom: 1rem !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 10px !important;
+        background-color: #fff !important;
+        overflow: hidden !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important;
+    }
+
+    /* 3. Ubah TD jadi flex kesamping (Label Kiri, Isi Kanan) */
+    .table-responsive table.table tbody tr td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0.75rem 1rem !important;
+        border-bottom: 1px dashed #d0d0d0 !important;
+        text-align: right !important;
+        width: 100% !important;
+    }
+
+    .table-responsive table.table tbody tr td:last-child {
+        border-bottom: none !important;
+    }
+
+    /* 4. Baris Nomor (#) paling atas dibikin Header Gelap */
+    .table-responsive table.table tbody tr td:first-child {
+        background-color: #212529 !important;
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+
+    /* 5. Tampilkan Label Otomatis di Kiri */
+    .table-responsive table.table tbody tr td:nth-child(1)::before {
+        content: "#" !important;
+        color: #fff !important;
+        font-weight: bold !important;
+    }
+
+    .table-responsive table.table tbody tr td:nth-child(2)::before {
+        content: "NAMA JENIS" !important;
+        font-weight: 700 !important;
+        font-size: 0.85rem !important;
+        color: #555 !important;
+    }
+
+    .table-responsive table.table tbody tr td:nth-child(3)::before {
+        content: "AKSI" !important;
+        font-weight: 700 !important;
+        font-size: 0.85rem !important;
+        color: #555 !important;
+    }
+}

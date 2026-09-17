@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function() {
     Route::get('/laporan/bulanan', [LaporanController::class, 'bulanan'])
     ->name('laporan.bulanan')
     ->middleware('auth');
+    Route::get('/about', function() {
+        return view('about');
+    })->name('about');
 
     // Khusus admin — users
     Route::middleware('role:admin')->name('admin.')->group(function () {

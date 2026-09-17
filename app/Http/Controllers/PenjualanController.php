@@ -24,10 +24,14 @@ class PenjualanController extends Controller
             ->when($user->role->name === 'kasir', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
-            // 🔍 Search nama user
+            // Search nama user
             ->when($keyword, function ($query) use ($keyword) {
                 $query->whereHas('user', function ($q) use ($keyword) {
                     $q->where('name', 'like', '%' . $keyword . '%');
+                })
+                // cari nama produk lewat itemPenjualan
+                ->orWhereHas('itemPenjualan.produk', function ($qProduk) use ($keyword){
+                    $qProduk->where('nama', 'like', '%' . $keyword . '%');
                 });
             })
             ->latest()

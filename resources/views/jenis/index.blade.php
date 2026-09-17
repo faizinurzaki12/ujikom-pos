@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('title', 'Halaman Jenis Produk')
-
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/jenis/index.css') }}">
+@endpush
 @section('content')
-<div class="container-fluid px-0">
+<div class="container-fluid px-0 jenis-container">
     <div class="row align-middle align-items-center mb-4 position-relative">
-        <!-- Judul Benar-benar di Tengah Halaman -->
         <div class="col-12 text-center">
             <h1 class="h3 fw-bold text-dark mb-0">Jenis Produk</h1>
         </div>
         
-        <!-- Tombol Tetap di Pojok Kanan -->
         @can('create', App\Models\Jenis::class)
             <div class="position-absolute end-0 top-50 translate-middle-y w-auto pe-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createJenisModal">
@@ -56,15 +56,13 @@
                 </div>
             </form>
 
-            <!-- Card dibuat overflow-hidden & p-0 agar tabel menempel sempurna -->
             <div class="card border-0 shadow-sm bg-white rounded-3 overflow-hidden p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0 custom-responsive-table">
                         <thead class="table-dark">
                             <tr>
                                 <th scope="col" class="ps-3" style="width: 50px;">#</th>
                                 <th scope="col" class="text-center">Nama Jenis</th>
-                                
                                 @can('create', App\Models\Jenis::class)
                                     <th scope="col" class="text-center pe-3" style="width: 200px;">Aksi</th>
                                 @endcan
@@ -73,11 +71,12 @@
                         <tbody>
                             @forelse($jenis as $index => $item)
                                 <tr>
-                                    <td class="ps-3">{{ $loop->iteration }}</td>
-                                    <td class="fw-medium text-center">{{ $item->nama_jenis }}</td>
+                                    <!-- Tambah data-label dan class td-number -->
+                                    <td data-label="#" class="ps-3 td-number">{{ $loop->iteration }}</td>
+                                    <td data-label="NAMA JENIS" class="fw-medium text-center">{{ $item->nama_jenis }}</td>
                                     
                                     @can('update', $item)
-                                    <td class="text-center pe-3">
+                                    <td data-label="AKSI" class="text-center pe-3">
                                         <div class="d-flex justify-content-center gap-1">
                                             <button 
                                                 type="button" 

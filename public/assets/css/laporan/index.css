@@ -1,0 +1,52 @@
+@media (max-width: 575.98px) {
+    /* Sembunyikan header tabel hitam di mobile */
+    .table thead {
+        display: none !important;
+    }
+
+    /* Ubah tabel & footer menjadi blok vertikal */
+    .table, .table tbody, .table tr, .table td, .table tfoot {
+        display: block;
+        width: 100%;
+    }
+
+    /* Tiap baris data dibuat menjadi kartu */
+    .table tbody tr {
+        margin-bottom: 10px;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 6px 12px;
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Tata letak label di kiri dan isi di kanan */
+    .table td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        text-align: right !important;
+        padding: 6px 0 !important;
+        border-bottom: 1px dashed #eee;
+    }
+
+    .table td:last-child {
+        border-bottom: none;
+    }
+
+    /* Menampilkan teks data-label di sisi kiri */
+    .table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 11px;
+        color: #6c757d;
+        margin-right: 15px;
+        text-align: left;
+    }
+
+    /* Menghilangkan elemen footer tabel terpisah agar tidak berantakan */
+    .border-top.pt-2.mt-auto {
+        display: none !important;
+    }
+}

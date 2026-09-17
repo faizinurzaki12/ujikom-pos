@@ -2,6 +2,10 @@
 
 @section('title', 'Rekap Bulanan & Mingguan')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/laporan/index.css') }}">
+@endpush
+
 @section('content')
 <div class="dashboard-flex">
     
@@ -89,20 +93,20 @@
                         <tbody>
                             @forelse($rekapHarian as $harian)
                                 <tr>
-                                    <td class="fw-medium">
+                                    <td data-label="Tanggal" class="fw-medium">
                                         {{ \Illuminate\Support\Carbon::parse($harian->tanggal)->translatedFormat('d F Y (l)') }}
                                     </td>
-                                    <td class="text-center">
+                                    <td data-label="Jml Transaksi" class="text-center">
                                         <span class="badge bg-primary-subtle text-primary px-2 py-1">
                                             {{ $harian->total_transaksi }}
                                         </span>
                                     </td>
-                                    <td class="text-center">
+                                    <td data-label="Kuantitas" class="text-center">
                                         <span class="badge bg-warning-subtle text-warning fw-bold px-2 py-1">
                                             {{ $harian->total_kuantitas ?? 0 }} Pcs
                                         </span>
                                     </td>
-                                    <td class="text-end fw-semibold">
+                                    <td data-label="Total Penjualan" class="text-end fw-semibold">
                                         Rp {{ number_format($harian->total_penjualan, 0, ',', '.') }}
                                     </td>
                                 </tr>
@@ -116,7 +120,7 @@
                 </div>
 
                 @if($rekapHarian->isNotEmpty())
-                    <div class="border-top pt-2 mt-auto">
+                    <div class="border-top pt-2 mt-auto d-none d-sm-block">
                         <table class="table table-sm mb-0 text-nowrap fs-7 border-0">
                             <tfoot>
                                 <tr class="fw-bold">
@@ -153,14 +157,14 @@
                             @if(isset($rekapMingguan) && count($rekapMingguan) > 0)
                                 @foreach($rekapMingguan as $minggu)
                                     <tr>
-                                        <td class="fw-medium">Minggu {{ $minggu['minggu_ke'] }}</td>
-                                        <td>{{ $minggu['rentang_tanggal'] }}</td>
-                                        <td class="text-center">
+                                        <td data-label="Minggu Ke-" class="fw-medium">Minggu {{ $minggu['minggu_ke'] }}</td>
+                                        <td data-label="Rentang Tanggal">{{ $minggu['rentang_tanggal'] }}</td>
+                                        <td data-label="Jml Transaksi" class="text-center">
                                             <span class="badge {{ $minggu['jumlah_transaksi'] > 0 ? 'bg-primary-subtle text-primary' : 'bg-secondary-subtle text-secondary' }} px-2 py-1">
                                                 {{ $minggu['jumlah_transaksi'] }}
                                             </span>
                                         </td>
-                                        <td class="text-center">
+                                        <td data-label="Kuantitas" class="text-center">
                                             @if($minggu['total_kuantitas'] > 0)
                                                 <span class="badge bg-warning-subtle text-warning fw-bold px-2 py-1">
                                                     {{ $minggu['total_kuantitas'] }} Pcs
@@ -169,7 +173,7 @@
                                                 0 Pcs
                                             @endif
                                         </td>
-                                        <td class="text-end {{ $minggu['total_penjualan'] > 0 ? 'fw-semibold' : '' }}">
+                                        <td data-label="Total Penjualan" class="text-end {{ $minggu['total_penjualan'] > 0 ? 'fw-semibold' : '' }}">
                                             Rp {{ number_format($minggu['total_penjualan'], 0, ',', '.') }}
                                         </td>
                                     </tr>
@@ -184,7 +188,7 @@
                 </div>
 
                 @if(isset($rekapMingguan) && count($rekapMingguan) > 0)
-                    <div class="border-top pt-2 mt-auto">
+                    <div class="border-top pt-2 mt-auto d-none d-sm-block">
                         <table class="table table-sm mb-0 text-nowrap fs-7 border-0">
                             <tfoot>
                                 <tr class="fw-bold">
@@ -221,9 +225,9 @@
                         <tbody>
                             @forelse($produkTerlaris as $produk)
                                 <tr>
-                                    <td class="fw-medium">{{ $produk->nama }}</td>
-                                    <td class="text-center">{{ $produk->stok ?? 0 }} Pcs</td>
-                                    <td class="text-center">
+                                    <td data-label="Nama Produk" class="fw-medium">{{ $produk->nama }}</td>
+                                    <td data-label="Stok Tersedia" class="text-center">{{ $produk->stok ?? 0 }} Pcs</td>
+                                    <td data-label="Unit Terjual" class="text-center">
                                         <span class="badge bg-success-subtle text-success fw-bold px-3 py-1">
                                             {{ $produk->total_terjual }} Terjual
                                         </span>

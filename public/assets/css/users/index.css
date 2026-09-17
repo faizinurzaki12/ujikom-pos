@@ -1,0 +1,49 @@
+/* style untuk halaman users  */
+@media (max-width: 767.98px) {
+    .users-container table thead {
+        display: table-header-group !important;
+    }
+    /* ubah struktur tabelnya menjadi block agar tidak di stack  */
+    .users-container table,
+    .users-container table tbody,
+    .users-container table tr,
+    .users-container table td {
+        display: block;
+        width: 100%;
+
+    }
+
+    /* style baris tabel jadi card */
+    .users-container table tr {
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        padding: 12px 16px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    /* style sel tabel */
+    .users-container table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0 !important;
+        border-bottom: 1px dashed #e9ecef;
+        text-align: right;
+    }
+
+    /* hapus garis bawah pada elemen terakhir kartu  */
+    .users-container table td:last-child {
+        border-bottom: none;
+    }
+
+    /* menampilkan label dari atribut data-label */
+    .users-container table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: #6c757d;
+        text-align: left;
+    }
+}

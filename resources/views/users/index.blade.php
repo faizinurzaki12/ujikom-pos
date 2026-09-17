@@ -2,6 +2,10 @@
 
 @section('title', 'Halaman Users')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/users/index.css') }}">
+@endpush
+
 @section('content')
 <div class="container-fluid px-0">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -31,54 +35,50 @@
     </form>
 
     <div class="card border-0 shadow-sm p-3 bg-white rounded-3">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Role</th>
-                        <th scope="col" class="text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($users as $index => $user)
-                    <tr>
-                        <td>{{ $users->firstItem() + $index }}</td>
-                        <td class="fw-medium">{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>
-                            @if(isset($user->role->name))
-                                <span class="badge {{ strtolower($user->role->name) == 'admin' ? 'bg-info text-dark' : 'bg-secondary' }}">
-                                    {{ $user->role->name }}
-                                </span>
-                            @else
-                                <span class="badge bg-secondary">-</span>
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            <a href="{{ route('admin.users.edit', $user) }}" title="Edit" class="btn btn-sm btn-outline-warning">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button title="Hapus" type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin Hapus user ini?')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-4">
-                            Tidak ada data user yang ditemukan.
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+        <div class="users-container">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" style="width: 50px;">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col" class="text-end" style="width: 150px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($users as $item)
+                            <tr>
+                                <td data-label="#">{{ $loop->iteration }}</td>
+                                <td data-label="Name" class="fw-bold">{{ $item->name }}</td>
+                                <td data-label="Email">{{ $item->email }}</td>
+                                <td data-label="Role">
+                                    <span class="badge {{ $item->role == 'admin' ? 'bg-info' : 'bg-secondary' }}">
+                                        {{ $item->role->name ?? $item->role }}
+                                    </span>
+                                </td>
+                                <td data-label="Aksi" class="text-end">
+                                    <a href="{{ route('admin.users.edit', $item->id) }}" class="btn btn-sm btn-outline-warning me-1">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <form action="{{ route('admin.users.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i> Hapus
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">Belum ada data user.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
         
         @if(method_exists($users, 'links'))

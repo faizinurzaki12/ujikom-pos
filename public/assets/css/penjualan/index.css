@@ -1,0 +1,91 @@
+/* ==========================================================================
+   STYLE HALAMAN PENJUALAN
+   ========================================================================== */
+
+.penjualan-container {
+    padding-bottom: 2rem;
+}
+
+/* ==========================================================================
+   RESPONSIF KHUSUS MOBILE & TABLET PORTRAIT (Layar <= 767.98px)
+   ========================================================================== */
+
+@media (max-width: 767.98px) {
+
+    /* 1. Hilangkan wrapper border & shadow Bootstrap di mobile */
+    .penjualan-container div.table-responsive {
+        overflow-x: visible !important;
+        overflow: visible !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    /* 2. Sembunyikan header tabel bawaan */
+    .penjualan-container table thead,
+    .penjualan-container .table thead {
+        display: none !important;
+    }
+
+    /* 3. Ubah elemen tabel jadi block */
+    .penjualan-container table, 
+    .penjualan-container tbody, 
+    .penjualan-container tr {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    /* 4. Mengubah setiap baris tabel (tr) menjadi Card */
+    .penjualan-container tbody tr {
+        margin-bottom: 1rem;
+        background: #ffffff;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 12px;
+        padding: 0 !important;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    /* 5. Mengatur sel data (td & th) menjadi flexbox rata kanan-kiri */
+    .penjualan-container td,
+    .penjualan-container th[scope="row"] {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        border: none !important;
+        border-bottom: 1px dashed #e2e8f0 !important;
+        text-align: right !important;
+        width: 100% !important;
+    }
+
+    .penjualan-container td {
+        padding: 10px 16px !important;
+    }
+
+    /* 6. Header Gelap untuk baris paling atas card (#) */
+    .penjualan-container th[scope="row"] {
+        background-color: #212529 !important;
+        color: #ffffff !important;
+        padding: 10px 16px !important;
+    }
+
+    .penjualan-container th[scope="row"]::before {
+        color: #ffffff !important;
+    }
+
+    /* 7. Menghilangkan garis pemisah di sel terakhir card */
+    .penjualan-container td:last-child {
+        border-bottom: none !important;
+    }
+
+    /* 8. Memunculkan label dari data-label */
+    .penjualan-container td::before,
+    .penjualan-container th[scope="row"]::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #4a5568;
+        text-align: left;
+        padding-right: 15px;
+        flex-shrink: 0;
+    }
+}

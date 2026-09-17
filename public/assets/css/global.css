@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Base & Layout Defaults
+   1. RESET & BASE LAYOUT
    ========================================================================== */
 body {
     overflow-x: hidden;
@@ -59,7 +59,7 @@ body {
 }
 
 /* ==========================================================================
-   Sidebar Styling
+   2. SIDEBAR STYLING
    ========================================================================== */
 .sidebar {
     width: 250px;
@@ -109,7 +109,7 @@ body {
 }
 
 /* ==========================================================================
-   Card Sales & Summary Components
+   3. CARD STATISTIK / SALES
    ========================================================================== */
 .card-sales {
     background-color: #ffffff;
@@ -122,19 +122,6 @@ body {
     border-left: 5px solid #0d6efd;
 }
 
-.text-sales {
-    font-size: 22px;
-    text-align: start;
-    font-weight: bold;
-}
-
-.text-sale {
-    margin-top: 8px;
-    color: #212529;
-    font-size: 24px;
-    font-weight: bold;
-}
-
 .card-payment-tunai {
     border-left: 5px solid #0d6efd;
 }
@@ -143,7 +130,6 @@ body {
     border-left: 5px solid #0d6efd;
 }
 
-/* Ringkasan Ukuran Ringkas (Compact Cards) */
 .card-sales.compact {
     padding: 12px 16px;
 }
@@ -160,73 +146,11 @@ body {
 .card-sales.compact .text-sale {
     font-size: 16px;
     margin-top: 2px;
+    font-weight: bold;
 }
 
 /* ==========================================================================
-   Table Container Styling (Desktop: Full Height Mengisi Layar Bawah)
-   ========================================================================== */
-.row-stat {
-    flex-shrink: 0;
-}
-
-.row-table-flex {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-}
-
-.row-table-flex > [class*="col-"] {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
-
-.card-table-flex {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 0;
-    flex: 1;
-}
-
-.card-table-flex .table-responsive {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-}
-
-/* Mengunci baris Total (tfoot) di posisi paling bawah kontainer tabel */
-.card-table-flex table tfoot {
-    position: sticky;
-    bottom: 0;
-    background-color: #f8f9fa;
-    z-index: 2;
-}
-
-.table-scroll-limited {
-    max-height: 120px;
-    overflow-y: auto;
-}
-
-.fs-7 {
-    font-size: 0.85rem;
-}
-
-/* Custom Scrollbar Styling */
-.card-table-flex .table-responsive::-webkit-scrollbar,
-.table-scroll-limited::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-}
-
-.card-table-flex .table-responsive::-webkit-scrollbar-thumb,
-.table-scroll-limited::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-}
-
-/* ==========================================================================
-   Popup & Alert Components
+   4. POPUP ALERT
    ========================================================================== */
 .popup-alert-overlay {
     position: fixed;
@@ -256,16 +180,9 @@ body {
     animation: popupZoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-
 @keyframes popupZoomIn {
-    from {
-        opacity: 0;
-        transform: scale(0.85);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .popup-icon {
@@ -274,13 +191,8 @@ body {
     display: block;
 }
 
-.popup-success .popup-icon {
-    color: #198754;
-}
-
-.popup-error .popup-icon {
-    color: #dc3545;
-}
+.popup-success .popup-icon { color: #198754; }
+.popup-error .popup-icon { color: #dc3545; }
 
 .popup-message {
     margin: 0;
@@ -290,107 +202,33 @@ body {
 }
 
 /* ==========================================================================
-   Responsive Breakpoints & Media Queries
+   5. RESPONSIVE BREAKPOINTS
    ========================================================================== */
-/* Tablet & Mobile: Otomatis Rapat Mengikuti Jumlah Konten (Fit Content) */
 @media (max-width: 1199.98px) {
     .main-content.no-page-scroll {
         height: auto;
         overflow-y: auto;
     }
-    
     .dashboard-flex {
         height: auto;
     }
-
-    .row-table-flex {
-        overflow: visible;
-        flex-direction: column;
-    }
-
-    .card-table-flex {
-        height: auto !important;
-        min-height: unset !important;
-        flex: none !important;
-    }
-
-    .card-table-flex .table-responsive {
-        flex: none !important;
-    }
 }
 
-/* Sidebar Toggle Breakpoint */
 @media (max-width: 991.98px) {
     .main-container {
         margin-left: 0 !important;
         width: 100% !important;
     }
-
     .sidebar {
         transform: translateX(-100%);
     }
-
     .sidebar.show {
         transform: translateX(0);
     }
 }
 
-/* Mobile Adjustments */
 @media (max-width: 575.98px) {
     .main-content {
         padding: 12px;
-    }
-
-    .card-sales.compact {
-        padding: 10px 12px;
-    }
-
-    .card-sales.compact .text-sale {
-        font-size: 14px;
-    }
-    /* tabel menyesuaikan hp mobile */
-    .w-sm-auto {
-        width: auto !important;
-    }
-
-    .table-head {
-        display: none !important;
-    }
-
-    .table, .table tbody, .table tr, .table td {
-        display: block;
-        width: 100%;
-    }
-
-    .table tr {
-        margin-bottom: 15px;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        padding: 10px;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .table td {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        text-align: right !important;
-        padding: 8px 0 !important;
-        border-bottom: 1px dashed #eee;
-    }
-
-    .table td:last-child {
-        border-bottom: none;
-        text-align: center;
-        justify-content: space-between !important;
-    }
-    /* nampilkan label kolom di kiri  */
-    .table td::before {
-        content: attr(data-label);
-        float: left;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 11px;
-        color: #6c757d;       
     }
 }

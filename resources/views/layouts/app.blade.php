@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard POS - Responsive')</title>
+    <title>@yield('title', 'Dashboard POS')</title>
+    
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom CSS -->
-     <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
+    
+    <!-- Global Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/global.css') }}">
+    
+    <!-- Stack Style per Halaman -->
+    @stack('styles')
 </head>
 <body>
     <div class="wrapper">
-        <!-- sidebar -->
+        <!-- Sidebar -->
         <div class="sidebar" id="sidebarMenu">
             <div class="d-flex justify-content-between align-items-center px-3 mb-4">
                 <h4 class="mb-0 text-center" style="color: #0d6efd;">Toko Handphone Danzz</h4>
@@ -46,29 +51,30 @@
                     <a class="nav-link {{ Request::is('laporan*') ? 'active' : '' }}" href="{{ route('laporan.bulanan') }}">Rekap Bulanan</a>
                 </li>
                 @endcan
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('about*') ? 'active' : '' }}" href="{{ route('about') }}">Tentang Kami</a>
+                </li>
             </ul>
 
-            <!-- Bagian Tombol Logout yang Memicu Modal -->
             <div class="logout d-flex justify-content-center">
-                <button type="button" class="nav-link text-danger border-0  w-100 text-center" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                <button type="button" class="nav-link text-danger border-0 w-100 text-center" data-bs-toggle="modal" data-bs-target="#logoutModal">
                     Logout
                 </button>
             </div>
         </div>
 
-        <!-- modal logout -->
-        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <!-- Modal Logout -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0 shadow rounded-4">
                     <div class="modal-body text-center p-4">
                         <div class="mb-3">
                             <i class="bi bi-exclamation-circle text-danger display-4"></i>
                         </div>
-                        <h5 class="fw-bold mb-2" id="logoutModalLabel">Konfirmasi Keluar</h5>
+                        <h5 class="fw-bold mb-2">Konfirmasi Keluar</h5>
                         <p class="text-muted mb-4">Apakah Anda yakin ingin keluar dari aplikasi POS?</p>
                         <div class="d-flex justify-content-center gap-2">
                             <button type="button" class="btn btn-light px-4 rounded-pill" data-bs-dismiss="modal">Batal</button>
-
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-danger m-0 rounded-pill">Ya, Keluar</button>
@@ -79,7 +85,7 @@
             </div>
         </div>
 
-        <!-- main kontent -->
+        <!-- Main Content Wrapper -->
         <div class="main-container">
             <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 px-md-4 border-bottom navbar-top">
                 <div class="container-fluid px-0">
@@ -87,19 +93,19 @@
                         <button class="btn btn-outline-secondary me-3 d-lg-none" id="sidebarToggle" type="button">
                             <i class="bi bi-list"></i>
                         </button>
-                        <a class="navbar-brand judul badge bg-primary mb-0">
+                        <span class="navbar-brand judul badge bg-primary mb-0">
                             @if(auth()->user()->role?->name == 'admin')
                                 Admin - {{ auth()->user()->name }}
                             @else
                                 Kasir - {{ auth()->user()->name }}
                             @endif
-                        </a>
+                        </span>
                     </div>
                 </div>
             </nav>
 
             <div class="main-content {{ Request::routeIs('dashboard') ? 'no-page-scroll' : '' }}">
-               @if(session('success'))
+                @if(session('success'))
                 <div class="popup-alert-overlay" id="popupAlert">
                     <div class="popup-alert popup-success">
                         <i class="bi bi-check-circle-fill popup-icon"></i>
@@ -116,6 +122,7 @@
                     </div>
                 </div>
                 @endif
+
                 @yield('content')
             </div>
         </div>
@@ -139,7 +146,6 @@
         if (popupAlert) {
             setTimeout(() => {
                 popupAlert.classList.add('popup-hide');
-                // hapus dari DOM setelah animasi fade selesai
                 setTimeout(() => popupAlert.remove(), 400);
             }, 3000);
         }
