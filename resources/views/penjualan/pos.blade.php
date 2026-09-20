@@ -143,7 +143,7 @@
                                 <span class="badge bg-primary mb-2">Sistem Pembayaran QRIS</span>
                                 <h6 class="fw-bold text-dark mb-1">Pindai Kode QR</h6>
                                 <div class="d-inline-block p-2 bg-white rounded shadow-sm border mb-2">
-                                    <img src="https://quickchart.io/qr?text=SIMULASI_QRIS_UJIKOM_SALE_{{ $sale->id }}_TOTAL_{{ $sale->total_pembayaran }}&size=180" alt="QRIS Simulasi" class="img-fluid" style="max-width: 180px;">
+                                    <img src="{{ asset(env('QRIS_IMAGE_PATH', 'assets/img/qris-saya.png')) }}" alt="QRIS Toko" class="img-fluid" style="max-width: 180px;">
                                 </div>
                                 <div class="fw-bold text-success mb-1">Total Tagihan: Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}</div>
                             </div>
