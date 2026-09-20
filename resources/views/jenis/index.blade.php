@@ -14,7 +14,7 @@
         @can('create', App\Models\Jenis::class)
             <div class="position-absolute end-0 top-50 translate-middle-y w-auto pe-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createJenisModal">
-                    <i class="bi bi-plus-lg me-1"></i> Tambah
+                    <i class="bi bi-plus-lg me-1"></i> Tambah Jenis
                 </button>
             </div>
         @endcan

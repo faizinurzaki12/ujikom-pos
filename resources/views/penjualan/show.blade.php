@@ -10,15 +10,22 @@
   <body class="bg-light">
     <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; padding: 20px 0">
       <div class="container" style="max-width: 700px">
-        <!-- Tombol Kembali -->
         <div class="mb-3">
           <a href="{{ route('penjualan.index') }}" class="text-decoration-none text-secondary fw-semibold small"> &larr; Kembali ke Daftar Penjualan </a>
         </div>
 
         <div class="card shadow-sm">
-          <div class="card-header bg-light">
-            <h5 class="mb-1 fw-bold">Detail Transaksi Penjualan</h5>
-            <p class="text-muted small mb-0">Rincian transaksi dan barang yang terjual.</p>
+          <div class="card-header bg-light d-flex justify-content-between align-items-start flex-wrap gap-2">
+            <div>
+              <h5 class="mb-1 fw-bold">Detail Transaksi Penjualan</h5>
+              <p class="text-muted small mb-0">Rincian transaksi dan barang yang terjual.</p>
+            </div>
+
+            @if($penjualan->status === 'COMPLETED')
+              <a href="{{ route('penjualan.struk', $penjualan->id) }}" class="btn btn-success btn-sm fw-semibold">
+                🖨️ Cetak Struk
+              </a>
+            @endif
           </div>
 
           <div class="card-body p-0">
@@ -71,8 +78,7 @@
                 </tbody>
               </table>
             </div>
-
-            <!-- rincian barang -->
+            <!-- tabel rincian barang -->
             <div class="p-4">
               <h6 class="fw-semibold mb-2">Rincian Barang</h6>
               <div class="table-responsive">
@@ -106,8 +112,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

@@ -20,6 +20,17 @@
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
+    /* Baris total (tfoot) dibuat kartu terpisah, sedikit beda biar keliatan itu ringkasan */
+    .table tfoot tr {
+        margin-top: 2px;
+        margin-bottom: 10px;
+        border: 1px solid #adb5bd;
+        border-radius: 8px;
+        padding: 6px 12px;
+        background-color: #f1f3f5;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
     /* Tata letak label di kiri dan isi di kanan */
     .table td {
         display: flex !important;
@@ -34,7 +45,7 @@
         border-bottom: none;
     }
 
-    /* Menampilkan teks data-label di sisi kiri */
+    /* Menampilkan teks data-label di sisi kiri (kosong kalau tidak diset, mis. sel "Total Harian") */
     .table td::before {
         content: attr(data-label);
         font-weight: bold;
@@ -45,8 +56,11 @@
         text-align: left;
     }
 
-    /* Menghilangkan elemen footer tabel terpisah agar tidak berantakan */
-    .border-top.pt-2.mt-auto {
-        display: none !important;
+    /* Baris judul total ("Total Harian" / "Total Mingguan") ditampilkan tengah & tanpa dashed border */
+    .table tfoot tr > td:first-child {
+        justify-content: flex-start !important;
+        text-align: left !important;
+        font-size: 13px;
+        border-bottom: 1px dashed #ced4da;
     }
 }

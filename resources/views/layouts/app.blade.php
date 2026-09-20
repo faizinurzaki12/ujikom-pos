@@ -4,16 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard POS')</title>
-    
-    <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    
-    <!-- Global Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/global.css') }}">
-    
-    <!-- Stack Style per Halaman -->
     @stack('styles')
 </head>
 <body>
@@ -32,7 +25,7 @@
                 </li>
                 @can('viewAny', App\Models\User::class)
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('users*') ? 'active' : '' }}" href="{{ url('users') }}">Users</a>
+                    <a class="nav-link {{ Request::is('users*') ? 'active' : '' }}" href="{{ url('users') }}">Pengguna</a>
                 </li>
                 @endcan
                 @can('viewAny', App\Models\Jenis::class)
@@ -127,8 +120,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const sidebar = document.getElementById('sidebarMenu');

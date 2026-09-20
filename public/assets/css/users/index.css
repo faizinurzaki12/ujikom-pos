@@ -1,4 +1,14 @@
-/* style untuk halaman users  */
+/* --- STYLE KHUSUS DESKTOP (Agar layout tabel lebih rapi & profesional) --- */
+@media (min-width: 768px) {
+    .users-container table th,
+    .users-container table td {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+        vertical-align: middle !important;
+    }
+}
+
+/* --- STYLE MOBILE (TIDAK DIGANGGU / SESuAI PERMINTAAN) --- */
 @media (max-width: 767.98px) {
     .users-container table thead {
         display: table-header-group !important;
@@ -10,7 +20,6 @@
     .users-container table td {
         display: block;
         width: 100%;
-
     }
 
     /* style baris tabel jadi card */

@@ -12,7 +12,7 @@
         <h1 class="h3 fw-bold text-dark mb-0">Produk</h1>
         @can('create', App\Models\Produk::class)
             <a href="{{ route('produk.create') }}" class="btn btn-primary text-nowrap">
-                <i class="bi bi-plus-lg me-1"></i> Tambah
+                <i class="bi bi-plus-lg me-1"></i> Tambah Produk
             </a>
         @endcan
     </div>

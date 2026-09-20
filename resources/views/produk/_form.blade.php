@@ -27,7 +27,6 @@
     </div>
 @endif
 
-<!-- untuk upload gambar -->
 <div class="col-md-12">
     <label for="validationServerFoto" class="form-label">Gambar</label>
     <input type="file" 
@@ -51,7 +50,6 @@
     </div>
 </div>
 
-<!-- untuk nama produknya -->
 <div class="col-md-12">
     <label for="validationServerName" class="form-label">Nama Produk</label>
     <input type="text" name="name" id="validationServerName" 
@@ -64,7 +62,6 @@
     @enderror
 </div>
 
-<!-- select jenis produk -->
 <div class="col-md-12">
     <label for="validationServerJenis" class="form-label">Jenis Produk</label>
     <select name="jenis_id" id="validationServerJenis"
@@ -86,7 +83,6 @@
     @enderror
 </div>
 
-<!-- Harga Beli -->
 <div class="col-md-12">
     <label for="displayPurchasePrice" class="form-label">Harga Beli</label>
     <input type="text" id="displayPurchasePrice" 
@@ -101,7 +97,6 @@
     @enderror
 </div>
 
-<!-- Harga Jual -->
 <div class="col-md-12">
     <label for="displaySellingPrice" class="form-label">Harga Jual</label>
     <input type="text" id="displaySellingPrice" 
@@ -116,7 +111,6 @@
     @enderror
 </div>
 
-<!-- stok -->
 <div class="col-md-12">
     <label for="validationServerStock" class="form-label">Stok</label>
     <input type="number" name="stock" id="validationServerStock" 
@@ -129,7 +123,6 @@
     @enderror
 </div>
 
-<!-- Tombol Aksi -->
 <div class="col-12 mt-4">
     <button type="submit" class="btn btn-success">Simpan</button>
     <a href="{{ route('produk.index') }}" class="btn btn-secondary">Kembali</a>
@@ -156,8 +149,6 @@
         document.getElementById(hiddenId).value = rawValue;
         input.value = formatNumber(rawValue);
     }
-
-    // Inisialisasi format saat halaman pertama kali dimuat (Mode Edit / Old Input)
     document.addEventListener("DOMContentLoaded", function () {
         const purchaseHidden = document.getElementById('validationServerPurchasePrice');
         const purchaseDisplay = document.getElementById('displayPurchasePrice');

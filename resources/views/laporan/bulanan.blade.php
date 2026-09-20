@@ -7,38 +7,48 @@
 @endpush
 
 @section('content')
-<div class="dashboard-flex">
-    
-    <!-- Header & Filter -->
-    <div class="row-stat mb-2">
+<div class="dashboard-flex" id="laporanPrintArea">
+    <div class="row-stat mb-2 no-print">
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
             <h5 class="fw-bold mb-0 text-truncate">
                 Rekap Bulanan &amp; Mingguan
                 <small class="text-muted fs-6 d-block d-sm-inline">({{ $namaBulanTahun }})</small>
             </h5>
 
-            <form action="{{ route('laporan.bulanan') }}" method="GET" class="d-flex gap-2 flex-wrap flex-sm-nowrap">
-                <select name="bulan" class="form-select form-select-sm">
-                    @foreach(range(1, 12) as $m)
-                        <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
-                            {{ \Illuminate\Support\Carbon::create()->month($m)->translatedFormat('F') }}
-                        </option>
-                    @endforeach
-                </select>
+            <div class="d-flex gap-2 flex-wrap flex-sm-nowrap align-items-center">
+                <form action="{{ route('laporan.bulanan') }}" method="GET" class="d-flex gap-2 flex-wrap flex-sm-nowrap">
+                    <select name="bulan" class="form-select form-select-sm" style="min-width: 130px;">
+                        @foreach(range(1, 12) as $m)
+                            <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
+                                {{ \Illuminate\Support\Carbon::create()->month($m)->translatedFormat('F') }}
+                            </option>
+                        @endforeach
+                    </select>
 
-                <select name="tahun" class="form-select form-select-sm">
-                    @foreach($daftarTahun as $thn)
-                        <option value="{{ $thn }}" {{ $tahun == $thn ? 'selected' : '' }}>
-                            {{ $thn }}
-                        </option>
-                    @endforeach
-                </select>
+                    <select name="tahun" class="form-select form-select-sm" style="min-width: 90px;">
+                        @foreach($daftarTahun as $thn)
+                            <option value="{{ $thn }}" {{ $tahun == $thn ? 'selected' : '' }}>
+                                {{ $thn }}
+                            </option>
+                        @endforeach
+                    </select>
 
-                <button type="submit" class="btn btn-primary btn-sm text-nowrap w-100 w-sm-auto">
-                    <i class="bi bi-search me-1"></i> Tampilkan
+                    <button type="submit" class="btn btn-primary btn-sm text-nowrap">
+                        <i class="bi bi-search me-1"></i> Tampilkan
+                    </button>
+                </form>
+
+                <button type="button" class="btn btn-outline-dark btn-sm text-nowrap" onclick="window.print()">
+                    <i class="bi bi-printer me-1"></i> Cetak Laporan
                 </button>
-            </form>
+            </div>
         </div>
+    </div>
+
+    {{-- Judul yang hanya tampil saat print/export --}}
+    <div class="print-only mb-3">
+        <h4 class="fw-bold mb-0">Rekap Bulanan &amp; Mingguan</h4>
+        <div class="text-muted">Periode: {{ $namaBulanTahun }}</div>
     </div>
 
     <!-- Ringkasan Kategori -->
@@ -73,7 +83,7 @@
 
     <!-- Tabel Rekap Harian & Rekap Mingguan -->
     <div class="row g-2 row-table-flex mb-2" style="flex: 3;">
-        
+
         <!-- Rekap Harian -->
         <div class="col-lg-6 col-12">
             <div class="card card-table-flex border-0 shadow-sm p-2 bg-white rounded-3">
@@ -116,23 +126,18 @@
                                 </tr>
                             @endforelse
                         </tbody>
-                    </table>
-                </div>
-
-                @if($rekapHarian->isNotEmpty())
-                    <div class="border-top pt-2 mt-auto d-none d-sm-block">
-                        <table class="table table-sm mb-0 text-nowrap fs-7 border-0">
+                        @if($rekapHarian->isNotEmpty())
                             <tfoot>
-                                <tr class="fw-bold">
+                                <tr class="fw-bold border-top table-total-row">
                                     <td>Total Harian</td>
-                                    <td class="text-center">{{ $rekapHarian->sum('total_transaksi') }}</td>
-                                    <td class="text-center">{{ $rekapHarian->sum('total_kuantitas') }} Pcs</td>
-                                    <td class="text-end">Rp {{ number_format($rekapHarian->sum('total_penjualan'), 0, ',', '.') }}</td>
+                                    <td data-label="Jml Transaksi" class="text-center">{{ $rekapHarian->sum('total_transaksi') }}</td>
+                                    <td data-label="Kuantitas" class="text-center">{{ $rekapHarian->sum('total_kuantitas') }} Pcs</td>
+                                    <td data-label="Total Penjualan" class="text-end">Rp {{ number_format($rekapHarian->sum('total_penjualan'), 0, ',', '.') }}</td>
                                 </tr>
                             </tfoot>
-                        </table>
-                    </div>
-                @endif
+                        @endif
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -184,23 +189,18 @@
                                 </tr>
                             @endif
                         </tbody>
-                    </table>
-                </div>
-
-                @if(isset($rekapMingguan) && count($rekapMingguan) > 0)
-                    <div class="border-top pt-2 mt-auto d-none d-sm-block">
-                        <table class="table table-sm mb-0 text-nowrap fs-7 border-0">
+                        @if(isset($rekapMingguan) && count($rekapMingguan) > 0)
                             <tfoot>
-                                <tr class="fw-bold">
+                                <tr class="fw-bold border-top table-total-row">
                                     <td colspan="2">Total Mingguan</td>
-                                    <td class="text-center">{{ collect($rekapMingguan)->sum('jumlah_transaksi') }}</td>
-                                    <td class="text-center">{{ collect($rekapMingguan)->sum('total_kuantitas') }} Pcs</td>
-                                    <td class="text-end">Rp {{ number_format(collect($rekapMingguan)->sum('total_penjualan'), 0, ',', '.') }}</td>
+                                    <td data-label="Jml Transaksi" class="text-center">{{ collect($rekapMingguan)->sum('jumlah_transaksi') }}</td>
+                                    <td data-label="Kuantitas" class="text-center">{{ collect($rekapMingguan)->sum('total_kuantitas') }} Pcs</td>
+                                    <td data-label="Total Penjualan" class="text-end">Rp {{ number_format(collect($rekapMingguan)->sum('total_penjualan'), 0, ',', '.') }}</td>
                                 </tr>
                             </tfoot>
-                        </table>
-                    </div>
-                @endif
+                        @endif
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -246,4 +246,30 @@
     </div>
 
 </div>
+
+<style>
+    .print-only { display: none; }
+
+    @media print {
+        body * { visibility: hidden; }
+        #laporanPrintArea, #laporanPrintArea * { visibility: visible; }
+        #laporanPrintArea {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .no-print { display: none !important; }
+        .print-only { display: block !important; }
+
+        /* Tabel yang tadinya scroll horizontal, saat print dipaksa muat semua kolom */
+        .table-responsive { overflow: visible !important; }
+        .table { font-size: 10.5px !important; }
+
+        .card { box-shadow: none !important; border: 1px solid #dee2e6 !important; }
+
+        @page { size: A4 landscape; margin: 12mm; }
+    }
+</style>
 @endsection

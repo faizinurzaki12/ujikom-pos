@@ -1,6 +1,4 @@
     @csrf
-
-    <!-- Nama -->
     <div class="col-md-12">
         <label for="validationServerName" class="form-label">Nama</label>
         <input type="text" name="name" id="validationServerName" 
@@ -13,7 +11,6 @@
         @enderror
     </div>
 
-    <!-- Email -->
     <div class="col-md-12">
         <label for="validationServerEmail" class="form-label">Email</label>
         <input type="email" name="email" id="validationServerEmail" 
@@ -26,7 +23,6 @@
         @enderror
     </div>
 
-    <!-- Password -->
     <div class="col-md-12">
         <label for="validationServerPassword" class="form-label">Password</label>
         <input type="password" name="password" id="validationServerPassword" 
@@ -38,7 +34,6 @@
         @enderror
     </div>
 
-    <!-- Role -->
     <div class="col-md-12">
         <label for="validationServerRole" class="form-label">Role</label>
         <select id="validationServerRole" name="role_id" 
@@ -57,7 +52,6 @@
         @enderror
     </div>
 
-    <!-- Tombol Aksi -->
     <div class="col-12 mt-4">
         <button type="submit" class="btn btn-success">Simpan</button>
         <a href="{{ route('admin.users') }}" class="btn btn-secondary">Kembali</a>

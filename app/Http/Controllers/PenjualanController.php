@@ -97,6 +97,22 @@ class PenjualanController extends Controller
     }
 
     /**
+     * Display the printable receipt (struk) for the specified resource.
+     */
+    public function struk(Penjualan $penjualan)
+    {
+        $user = Auth::user();
+
+        if ($user->role?->name === 'kasir' && $penjualan->user_id !== $user->id) {
+            abort(403, 'Anda tidak berhak melihat struk transaksi ini.');
+        }
+
+        $penjualan->load(['user', 'itemPenjualan.produk']);
+
+        return view('penjualan.struk', compact('penjualan'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Penjualan $penjualan)
@@ -141,14 +157,15 @@ class PenjualanController extends Controller
         if ($request->payment_method === 'CASH') {
             // Bersihkan format ribuan bertitik dari JavaScript (misal "2.000.000" -> "2000000")
             $rawUang = $request->input('uang_dibayar', 0);
-            $rawKembalian = $request->input('kembalian', 0);
 
             $uangDibayar = floatval(preg_replace('/[^0-9]/', '', $rawUang));
-            $kembalian = floatval(preg_replace('/[^0-9]/', '', $rawKembalian));
 
             if ($uangDibayar < $total) {
                 return back()->withErrors(['uang_dibayar' => 'Uang tunai dari pelanggan kurang dari total pembayaran!'])->withInput();
             }
+
+            // Kembalian dihitung sendiri oleh server, jangan percaya nilai kiriman client
+            $kembalian = $uangDibayar - $total;
         }
 
         $newStatus = ($request->payment_method === 'BAYAR_NANTI') ? 'OPEN' : 'COMPLETED';
@@ -163,13 +180,17 @@ class PenjualanController extends Controller
             ]);
         });
 
-        $message = ($newStatus === 'OPEN') 
-            ? 'Transaksi berhasil disimpan (Bayar Nanti)' 
-            : 'Transaksi berhasil diselesaikan';
+        // Transaksi selesai (CASH/QRIS) -> arahkan ke struk supaya bisa langsung dicetak
+        if ($newStatus === 'COMPLETED') {
+            return redirect()
+                ->route('penjualan.struk', $penjualan->id)
+                ->with('success', 'Transaksi berhasil diselesaikan');
+        }
 
+        // Bayar nanti -> tetap kembali ke daftar seperti sebelumnya
         return redirect()
             ->route('penjualan.index')
-            ->with('success', $message);
+            ->with('success', 'Transaksi berhasil disimpan (Bayar Nanti)');
     }
 
     /**

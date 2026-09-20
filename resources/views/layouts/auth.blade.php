@@ -18,8 +18,6 @@
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        /* Animasi Card Meluncur dari Bawah ke Atas */
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -35,7 +33,6 @@
             animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Styling tambahan khas Konter HP */
         .brand-icon {
             width: 60px;
             height: 60px;
@@ -58,8 +55,6 @@
     <div class="container">
         @yield('content')
     </div>
-
-    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

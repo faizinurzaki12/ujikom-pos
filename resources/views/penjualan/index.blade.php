@@ -8,11 +8,10 @@
 
 @section('content')
 <div class="container-fluid px-0 penjualan-container">
-    <!-- Header dengan Judul di Kiri dan Tombol Create di Kanan -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 fw-bold text-dark mb-0">Penjualan</h1>
         <a href="{{ route('penjualan.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-lg me-1"></i> Tambah
+            <i class="bi bi-plus-lg me-1"></i> Tambah Penjualan
         </a>
     </div>
 
@@ -119,7 +118,7 @@
         </table>
     </div>
 
-    <!-- Pagination Links -->
+    <!-- Pagination -->
     <div class="d-flex justify-content-end">
         {{ $sales->links() }}
     </div>

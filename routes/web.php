@@ -42,9 +42,11 @@ Route::middleware('auth')->group(function() {
 
     // Admin & kasir — produk, DIPINDAH keluar, sejajar dengan grup admin di atas
     Route::middleware('role:admin,kasir')->group(function() {
+        Route::resource('jenis', JenisController::class)->parameters(['jenis' => 'jenis']);
         Route::resource('/produk', ProdukController::class);
         Route::resource('/penjualan', PenjualanController::class);
-        Route::resource('jenis', JenisController::class)->parameters(['jenis' => 'jenis']);
+        Route::get('/penjualan/{penjualan}/struk', [PenjualanController::class, 'struk'])
+        ->name('penjualan.struk');
         Route::resource('/itempenjualan', ItemPenjualanController::class);
     });
 });

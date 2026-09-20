@@ -17,7 +17,6 @@
     <h4 class="mb-3 fw-bold">{{ $mode === 'edit' ? 'Edit Penjualan' : 'Tambah Penjualan' }}</h4>
 
     <div class="row g-3">
-        <!-- Daftar Produk -->
         <div class="col-12 col-lg-6">
             <div class="card shadow-sm border-0">
                 <div class="card-body p-3 product-scroll-wrapper">
@@ -55,7 +54,6 @@
             </div>
         </div>
 
-        <!-- Keranjang Belanja -->
         <div class="col-12 col-lg-6">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
@@ -199,20 +197,24 @@
 
         const textKembalian = document.getElementById('textKembalian');
         const pesanUangKurang = document.getElementById('pesanUangKurang');
+        const kembalianInput = document.getElementById('kembalianInput');
 
         if (inputUang === 0) {
             textKembalian.innerText = 'Rp.0';
             pesanUangKurang.classList.add('d-none');
+            kembalianInput.value = 0;
             return;
         }
 
         if (selisih >= 0) {
             textKembalian.innerText = 'Rp.' + selisih.toLocaleString('id-ID');
             pesanUangKurang.classList.add('d-none');
+            kembalianInput.value = selisih;
         } else {
             textKembalian.innerText = 'Rp.0';
             pesanUangKurang.innerText = 'Uang Kurang Rp.' + Math.abs(selisih).toLocaleString('id-ID');
             pesanUangKurang.classList.remove('d-none');
+            kembalianInput.value = 0;
         }
     }
 
