@@ -107,5 +107,51 @@
             </div>
         </div>
     </div>
+
+    {{-- Bagian Best Seller (Produk Terlaris Bulan Ini) --}}
+    <div class="row-stat mt-3">
+        <h6 class="fw-bold text-dark mb-1 fs-6">Best Seller</h6>
+    </div>
+
+    <div class="row g-2">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm p-2 bg-white rounded-3">
+                <div class="d-flex justify-content-between align-items-center mb-1 px-1">
+                    <span class="text-secondary fw-semibold fs-7">Produk Terlaris Bulan Ini</span>
+                    <span class="badge bg-primary text-white">Top Products</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover align-middle mb-0 text-nowrap">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Nama Produk</th>
+                                <th class="text-center">Stok Tersedia</th>
+                                <th class="text-center">Unit Terjual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($produkTerlarisBulanan as $index => $item)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td class="fw-medium">{{ $item->nama }}</td>
+                                    <td class="text-center">{{ $item->stok }} Pcs</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-success-subtle text-success px-2 py-1">
+                                            {{ $item->total_terjual }} Terjual
+                                        </span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-muted text-center py-2">Belum ada data penjualan bulan ini.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

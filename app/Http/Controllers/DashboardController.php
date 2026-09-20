@@ -16,6 +16,8 @@ class DashboardController extends Controller
 
     public function index()
     {
+        $bulanAktif = Carbon::now()->month;
+        $tahunAktif = Carbon::now()->year;
         // nama function yang ada di laporan penjualan servis
         $ringkasan = $this->laporanService->ringkasanHariIni();
 
@@ -24,6 +26,7 @@ class DashboardController extends Controller
             'tanggalHariIni' => Carbon::now(),
             'ringkasan' => $ringkasan,
             'produkTerlaris' => $this->laporanService->produkTerlarisHariIni(),
+            'produkTerlarisBulanan' => $this->laporanService->produkTerlarisBulanan($bulanAktif, $tahunAktif, 5),
             'produkStokRendah' => $this->stokService->produkStokRendah(),
             'produkStokHabis' => $this->stokService->produkStokHabis(),
         ]);
