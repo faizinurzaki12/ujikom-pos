@@ -6,17 +6,13 @@
 @endpush
 @section('content')
 <div class="container-fluid px-0 jenis-container">
-    <div class="row align-middle align-items-center mb-4 position-relative">
-        <div class="col-12 text-center">
-            <h1 class="h3 fw-bold text-dark mb-0">Jenis Produk</h1>
-        </div>
-        
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <h1 class="h3 fw-bold text-dark mb-0">Jenis Produk</h1>
+
         @can('create', App\Models\Jenis::class)
-            <div class="position-absolute end-0 top-50 translate-middle-y w-auto pe-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createJenisModal">
-                    <i class="bi bi-plus-lg me-1"></i> Tambah Jenis
-                </button>
-            </div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createJenisModal">
+                <i class="bi bi-plus-lg me-1"></i> Tambah Jenis
+            </button>
         @endcan
     </div>
 
