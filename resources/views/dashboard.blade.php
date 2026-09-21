@@ -80,7 +80,7 @@
             <div class="card border-0 shadow-sm p-2 bg-white rounded-3">
                 <div class="d-flex justify-content-between align-items-center mb-1 px-1">
                     <span class="text-secondary fw-semibold fs-7">Stok Habis</span>
-                    <span class="badge bg-primary text-dark">Urgent</span>
+                    <span class="badge bg-primary text-dark">Darurat</span>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-sm table-hover align-middle mb-0 text-nowrap">
