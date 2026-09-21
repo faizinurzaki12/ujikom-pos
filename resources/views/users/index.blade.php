@@ -40,7 +40,7 @@
                     <thead class="table-dark">
                         <tr>
                             <th scope="col" class="py-3 ps-3" style="width: 60px;">#</th>
-                            <th scope="col" class="py-3">Name</th>
+                            <th scope="col" class="py-3">Nama</th>
                             <th scope="col" class="py-3">Email</th>
                             <th scope="col" class="py-3">Role</th>
                             <th scope="col" class="py-3 text-end pe-3" style="width: 180px;">Aksi</th>
