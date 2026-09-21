@@ -1,5 +1,5 @@
 QRIS_API_URL="https://api.qrserver.com/v1/create-qr-code/"
-QRIS_IMAGE_PATH="img/qris-saya.png"
+QRIS_IMAGE_PATH="assets/img/qris-saya.png"
 <div class="d-inline-block p-2 bg-white rounded shadow-sm border mb-2">
     <img src="https://quickchart.io/qr?text=SIMULASI_QRIS_UJIKOM_SALE_{{ $sale->id }}_TOTAL_{{ $sale->total_pembayaran }}&size=180" alt="QRIS Simulasi" class="img-fluid" style="max-width: 180px;">
 </div>

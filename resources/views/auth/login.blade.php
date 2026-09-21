@@ -3,9 +3,9 @@
 @section('title', 'Login - CellularPOS')
 
 @section('content')
-<div class="row justify-content-center align-items-center">
-  <div class="col-auto">
-    <div class="card login-card-anim text-center shadow-lg p-4 bg-white rounded-4" style="width: 23rem; border: none;">
+<div class="row justify-content-center align-items-center min-vh-100 px-3 mx-0">
+  <div class="col-auto px-0">
+    <div class="card login-card-anim text-center shadow-lg p-4 bg-white rounded-4" style="width: 100%; max-width: 23rem; border: none;">
 
       <div class="brand-icon text-white">
         <i class="bi bi-phone-vibrate fs-2"></i>
@@ -45,11 +45,6 @@
           </button>
         </form>
       </div>
-
-      <!-- <div class="mt-4 pt-3 border-top">
-        <small class="text-muted" style="font-size: 0.75rem;">CellularPOS v1.0 &bull; Akses Kasir & Teknisi</small>
-      </div> -->
-
     </div>
   </div>
 </div>

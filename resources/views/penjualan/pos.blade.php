@@ -115,8 +115,8 @@
 
                         <select name="payment_method" id="paymentMethod" class="form-select mb-3" onchange="togglePaymentInputs()">
                             <option value="">Pilih Pembayaran</option>
-                            <option value="CASH" {{ old('payment_method') === 'CASH' ? 'selected' : '' }}>Cash (Tunai)</option>
-                            <option value="QRIS" {{ old('payment_method') === 'QRIS' ? 'selected' : '' }}>QRIS (Simulasi)</option>
+                            <option value="CASH" {{ old('payment_method') === 'CASH' ? 'selected' : '' }}>Cash</option>
+                            <option value="QRIS" {{ old('payment_method') === 'QRIS' ? 'selected' : '' }}>QRIS</option>
                         </select>
 
                         <div id="cashInputWrapper" class="mb-3 d-none">
@@ -139,7 +139,7 @@
                         <div id="qrisInputWrapper" class="mb-3 d-none">
                             <div class="p-3 border rounded bg-light text-center">
                                 <span class="badge bg-primary mb-2">Sistem Pembayaran QRIS</span>
-                                <h6 class="fw-bold text-dark mb-1">Pindai Kode QR</h6>
+                                <h6 class="fw-bold text-dark mb-1"> Pindai Kode QR</h6>
                                 <div class="d-inline-block p-2 bg-white rounded shadow-sm border mb-2">
                                     <img src="{{ asset(env('QRIS_IMAGE_PATH', 'assets/img/qris-saya.png')) }}" alt="QRIS Toko" class="img-fluid" style="max-width: 180px;">
                                 </div>
